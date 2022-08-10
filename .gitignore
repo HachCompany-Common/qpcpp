@@ -36,7 +36,6 @@ JLink*.*
 version-*
 
 3rd_party/
-doxygen/
 cert-pack/
 html/
 test_priv/

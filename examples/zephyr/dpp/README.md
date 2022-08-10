@@ -1,32 +1,40 @@
-Blinky example
-###################
+# DPP example
 
-Overview
-********
-DPP example with multiple active objects.
+# Overview
+Dining Philosophers Problem (DPP) example with multiple
+active objects.
 
 
-Building and Running
-********************
-Linux:
-Open a terminal in the dpp directory.
+# Building and Running (Linux)
 
-type:
+Open a terminal in the directory of this example (`qpcpp/examples/zephry/dpp`).
+
+Depending on your Zephyr installation, you might need to shell the script
+to configure Zephyr environment:
+
+```
 source ~/zephyrproject/zephyr/zephyr-env.sh
+```
 
-type:
+To build the example, type:
+```
 west build -b <board>
+```
+where `<board>` is one of the
+[boards supported by Zephyr](https://docs.zephyrproject.org/latest/boards/index.html).
+The `dpp` example has been tested with the following boards:
 
-example <board>:
+```
 nucleo_l152re
 nucleo_h743zi
+```
 
-type:
+To flush the board, type:
+```
 west flush
+```
 
-
-Sample Output
-=============
+# Sample Output
 The application also produces ASCII output to the serial terminal
 (if suppoted by the board):
 
