@@ -1,0 +1,21 @@
+# QPCPP as Zephyr module
+# SPDX-License-Identifier:  GPL-3.0-or-later OR LicenseRef-QL-commercial
+
+menuconfig QPCPP
+    bool "QPCPP"
+    default n
+    help
+        Enables the QPCPP Module
+
+if QPCPP
+
+config QSPY
+	bool "QSPY Tracing"
+	default n
+	help
+	  Enables the QSPY Tracing for QPCPP
+
+module = QPCPP
+module-str = QPCPP
+
+endif
