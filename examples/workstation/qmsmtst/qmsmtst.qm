@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model version="5.2.4" links="1">
+<model version="5.2.5" links="1">
  <documentation>QMsmTst is a test for the QMsm state machine implementation strategy based on the state machine design from Chapter 2 of the PSiCC2 book.</documentation>
  <!--${qpcpp}-->
  <framework name="qpcpp"/>
@@ -316,7 +316,13 @@ void BSP_terminate(int16_t const result);
   </file>
   <!--${.::qmsmtst.cpp}-->
   <file name="qmsmtst.cpp">
-   <text>#include &quot;qpcpp.hpp&quot;
+   <text>#include &quot;qep_port.hpp&quot;     // QEP event processor
+#include &quot;qassert.h&quot;        // embedded systems assertions
+#ifdef Q_SPY
+    #include &quot;qs_port.hpp&quot;  // QS software tracing
+#else
+    #include &quot;qs_dummy.hpp&quot; // QS software tracing dummy
+#endif
 #include &quot;qmsmtst.hpp&quot;
 
 $declare(SMs::QMsmTst)

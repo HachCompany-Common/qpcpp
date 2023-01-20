@@ -337,7 +337,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-fno-exceptions</MiscControls>
-              <Define>QXK_USE_IRQ_HANDLER=LCD_IRQHandler QXK_USE_IRQ_NUM=30</Define>
+              <Define>QXK_USE_IRQ_HANDLER=WWDG_IRQHandler QXK_USE_IRQ_NUM=0</Define>
               <Undefine></Undefine>
               <IncludePath>..\..;..\..\..\..\..\include;..\..\..\..\..\ports\arm-cm\qxk\armclang;..\..\..\..\..\3rd_party\CMSIS\Include;..\..\..\..\..\3rd_party\nucleo-l053r8</IncludePath>
             </VariousControls>
@@ -407,11 +407,6 @@
               <FileName>philo.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\philo.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>README.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\README.txt</FilePath>
             </File>
             <File>
               <FileName>table.cpp</FileName>
@@ -1039,11 +1034,6 @@
               <FilePath>..\..\philo.cpp</FilePath>
             </File>
             <File>
-              <FileName>README.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\README.txt</FilePath>
-            </File>
-            <File>
               <FileName>table.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\table.cpp</FilePath>
@@ -1667,11 +1657,6 @@
               <FileName>philo.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\..\philo.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>README.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\README.txt</FilePath>
             </File>
             <File>
               <FileName>table.cpp</FileName>

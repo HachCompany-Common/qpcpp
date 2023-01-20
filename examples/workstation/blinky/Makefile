@@ -1,13 +1,13 @@
 ##############################################################################
 # Product: Makefile for QP/C++ for Windows and POSIX *HOSTS*
-# Last updated for version 7.2.0
-# Last updated on  2022-11-13
+# Last updated for version 7.2.2
+# Last updated on  2023-02-17
 #
 #                    Q u a n t u m  L e a P s
 #                    ------------------------
 #                    Modern Embedded Software
 #
-# Copyright (C) 2005 Quantum Leaps, LLC. All rights reserved.
+# Copyright (C) 2005 Quantum Leaps, LLC, <state-machine.com>.
 #
 # This program is open source software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as published
@@ -43,7 +43,7 @@
 # NOTE:
 # To use this Makefile on Windows, you will need the GNU make utility, which
 # is included in the QTools collection for Windows, see:
-#    http://sourceforge.net/projects/qpc/files/QTools/
+#    https://github.com/QuantumLeaps/qtools
 #
 
 #-----------------------------------------------------------------------------
@@ -94,7 +94,6 @@ endif
 CPP_SRCS += \
 	qep_hsm.cpp \
 	qep_msm.cpp \
-	qf_act.cpp \
 	qf_actq.cpp \
 	qf_defer.cpp \
 	qf_dyn.cpp \
@@ -106,11 +105,12 @@ CPP_SRCS += \
 	qf_time.cpp \
 	qf_port.cpp
 
+# C++ QS source files
 QS_SRCS := \
 	qs.cpp \
-	qs_64bit.cpp \
 	qs_rx.cpp \
 	qs_fp.cpp \
+	qs_64bit.cpp \
 	qs_port.cpp
 
 ifeq ($(OS),Windows_NT)

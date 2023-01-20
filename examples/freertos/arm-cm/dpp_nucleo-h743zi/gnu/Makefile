@@ -1,13 +1,13 @@
 ##############################################################################
-# Product: Makefile for QP/C++ on NUCLEO-H743ZI, FreeRTOS, GNU-ARM
-# Last Updated for Version: 7.0.1
-# Date of the Last Update:  2022-06-13
+# Product: Makefile for QP/C++ on NUCLEO-H743ZI, FreeRTOS-Kernel, GNU-ARM
+# Last Updated for Version: 7.2.2
+# Date of the Last Update:  2023-03-04
 #
 #                    Q u a n t u m  L e a P s
 #                    ------------------------
 #                    Modern Embedded Software
 #
-# Copyright (C) 2005-2021 Quantum Leaps, LLC. All rights reserved.
+# Copyright (C) 2005 Quantum Leaps, LLC. <www.state-machine.com>.
 #
 # This program is open source software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as published
@@ -64,7 +64,7 @@ endif
 
 # location of the FREERTOS (if not provided in an environemnt var.)
 ifeq ($(FREERTOS),)
-FREERTOS := $(QPCPP)/3rd_party/FreeRTOS
+FREERTOS := $(QPCPP)/3rd_party/FreeRTOS-Kernel
 endif
 
 # QP port used in this project
@@ -76,8 +76,8 @@ VPATH = \
 	$(QPCPP)/src/qf \
 	$(QPCPP)/src/qs \
 	$(QP_PORT_DIR) \
-	$(FREERTOS)/Source \
-	$(FREERTOS)/Source/portable/GCC/ARM_CM7/r0p1 \
+	$(FREERTOS) \
+	$(FREERTOS)/portable/GCC/ARM_CM7/r0p1 \
 	$(QPCPP)/3rd_party/STM32CubeH7/nucleo-h743zi/gnu \
 	$(QPCPP)/3rd_party/STM32CubeH7/Drivers/BSP\STM32H7xx_Nucleo_144 \
 	$(QPCPP)/3rd_party/STM32CubeH7/Drivers/STM32H7xx_HAL_Driver/Src \
@@ -88,8 +88,8 @@ INCLUDES  = \
 	-I.. \
 	-I$(QPCPP)/include \
 	-I$(QP_PORT_DIR) \
-	-I$(FREERTOS)/Source/include \
-	-I$(FREERTOS)/Source/portable/GCC/ARM_CM4F \
+	-I$(FREERTOS)/include \
+	-I$(FREERTOS)/portable/GCC/ARM_CM4F \
 	-I$(QPCPP)/3rd_party/CMSIS/Include \
 	-I$(QPCPP)/3rd_party/STM32CubeH7/Drivers/CMSIS/Device/ST/STM32H7xx/Include \
 	-I$(QPCPP)/3rd_party/STM32CubeH7/Drivers/BSP/STM32H7xx_Nucleo_144 \
