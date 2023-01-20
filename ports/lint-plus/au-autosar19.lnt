@@ -8,7 +8,7 @@
 // ---------------------------------------------------------------------------
 
 
-// au-autosar.lnt -- Author options - AUTOSAR C++
+// au-autosar19.lnt -- Author options - AUTOSAR C++ 19-03
 
 /*
     This options file can be used to explicitly activate those
@@ -16,7 +16,7 @@
 
     Vector Informatik GmbH relies on the document, "Guidelines for the use of
     the C++14 language in critical and safety-related systems" copyright
-    2017 by AUTOSAR, as the primary source for this file. Vector Informatik GmbH
+    2019 by AUTOSAR, as the primary source for this file. Vector Informatik GmbH
     makes no warranty as to the completeness or applicability of this
     options file and reserves the right to amend or alter the official
     contents of such at any time.
@@ -150,28 +150,6 @@
     +elib(552)
     -append(552,[AUTOSAR Rule M0-1-4])
 
-/* Rule M0-1-5 (required, implementation, automated) */
-
-    /* 751 - local typedef not referenced */
-    +e751
-    +elib(751)
-    -append(751,[AUTOSAR Rule M0-1-5])
-
-    /* 753 - local tag not referenced */
-    +e753
-    +elib(753)
-    -append(753,[AUTOSAR Rule M0-1-5])
-
-    /* 756 - global typedef not referenced */
-    +e756
-    +elib(756)
-    -append(756,[AUTOSAR Rule M0-1-5])
-
-    /* 758 - global tag not referenced */
-    +e758
-    +elib(758)
-    -append(758,[AUTOSAR Rule M0-1-5])
-
 /* Rule A0-1-1 (required, implementation, automated) */
 
     /* 438 - last value assigned to symbol not used */
@@ -264,21 +242,38 @@
     +elib(528)
     -append(528,[AUTOSAR Rule A0-1-3])
 
-/* Rule M0-1-11 (required, implementation, automated) */
+/* Rule A0-1-4 (required, implementation, automated) */
 
     /* 715 - named parameter not subsequently referenced */
     +estring(715,non-virtual)
     +elib(715)
-    -append(715(non-virtual),[AUTOSAR Rule M0-1-11])
+    -append(715(non-virtual),[AUTOSAR Rule A0-1-4])
 
-    /* 9215 - unnamed function parameter */
-    +estring(9215,non-virtual)
-    +elib(9215)
-    -append(9215(non-virtual),[AUTOSAR Rule M0-1-11])
-
-/* Rule M0-1-12 (required, implementation, automated) */
+/* Rule A0-1-5 (required, implementation, automated) */
 
     /* not currently supported */
+
+/* Rule A0-1-6 (advisory, implementation, automated) */
+
+    /* 751 - local typedef not referenced */
+    +e751
+    +elib(751)
+    -append(751,[AUTOSAR Rule A0-1-6])
+
+    /* 753 - local tag not referenced */
+    +e753
+    +elib(753)
+    -append(753,[AUTOSAR Rule A0-1-6])
+
+    /* 756 - global typedef not referenced */
+    +e756
+    +elib(756)
+    -append(756,[AUTOSAR Rule A0-1-6])
+
+    /* 758 - global tag not referenced */
+    +e758
+    +elib(758)
+    -append(758,[AUTOSAR Rule A0-1-6])
 
 /* Rule M0-2-1 (required, implementation, automated) */
 
@@ -290,7 +285,7 @@
 
 /* Rule M0-3-2 (required, implementation, non-automated) */
 
-    /* not currently supported */
+    /* not statically checkable */
 
 /* Rule M0-4-1 (required, implementation, non-automated) */
 
@@ -315,6 +310,13 @@
 /* Rule A0-4-3 (required, toolchain, automated) */
 
     /* not statically checkable */
+
+/* Rule A0-4-4 (required, implementation, partially automated) */
+
+    /* 2423 - apparent domain error for function */
+    +e2423
+    +elib(2423)
+    -append(2423,[AUTOSAR Rule A0-4-4])
 
 /* Rule A1-1-1 (required, implementation, automated) */
 
@@ -358,31 +360,31 @@
     -deprecate(function,std::bind2nd,[AUTOSAR Rule A1-1-1])
     -append(586(std::bind2nd),[AUTOSAR Rule A1-1-1])
 
-/* Rule M1-0-2 (required, implementation, non-automated) */
+/* Rule M1-0-2 (required, toolchain, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A1-1-2 (required, toolchain, non-automated) */
+/* Rule A1-1-2 (required, implementation/toolchain, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A1-1-3 (required, implementation, automated) */
+/* Rule A1-1-3 (required, toolchain, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A1-2-1 (required, implementation, non-automated) */
+/* Rule A1-2-1 (required, toolchain, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A1-4-1 (required, implementation, non-automated) */
+/* Rule A1-4-1 (required, implementation/verification, non-automated) */
 
-    /* not currently supported */
+    /* not statically checkable */
 
-/* Rule A1-4-2 (required, implementation, non-automated) */
+/* Rule A1-4-3 (advisory, implementation, automated) */
 
-    /* not currently supported */
+    /* not statically checkable */
 
-/* Rule A2-2-1 (required, implementation, automated) */
+/* Rule A2-3-1 (required, architecture/design/implementation, automated) */
 
     /* not currently supported */
 
@@ -400,82 +402,100 @@
     +elib(739)
     -append(739,[AUTOSAR Rule A2-5-1])
 
-/* Rule A2-6-1 (required, implementation, automated) */
+/* Rule A2-5-2 (required, implementation, automated) */
 
     /* 9102 - possible digraph sequence */
     +e9102
     +elib(9102)
-    -append(9102,[AUTOSAR Rule A2-6-1])
+    -append(9102,[AUTOSAR Rule A2-5-2])
 
-/* Rule A2-8-1 (required, implementation, automated) */
+/* Rule M2-7-1 (required, implementation, automated) */
+
+    -fnc            /* disable nested comments */
+
+    /* 602 - slash star within block comment */
+    +e602
+    +elib(602)
+    -append(602,[AUTOSAR Rule M2-7-1])
+
+/* Rule A2-7-1 (required, implementation, automated) */
 
     /* 427 - / / comment continued via back-slash */
     +e427
     +elib(427)
-    -append(427,[AUTOSAR Rule A2-8-1])
+    -append(427,[AUTOSAR Rule A2-7-1])
 
-/* Rule A2-8-2 (required, implementation, non-automated) */
+/* Rule A2-7-2 (required, implementation, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A2-8-3 (required, implementation, automated) */
+/* Rule A2-7-3 (required, implementation, automated) */
 
     /* not currently supported */
 
-/* Rule A2-8-4 (required, implementation, automated) */
+/* Rule A2-7-5 (required, implementation, non-automated) */
 
-    /* 1904 - old-style c comment */
-    +e1904
-    +elib(1904)
-    -append(1904,[AUTOSAR Rule A2-8-4])
+    /* not statically checkable */
 
-/* Rule A2-9-1 (required, implementation, automated) */
+/* Rule A2-8-1 (required, architecture/design/implementation, non-automated) */
 
-    /* not currently supported */
+    /* not statically checkable */
 
-/* Rule M2-10-1 (required, implementation, automated) */
+/* Rule A2-8-2 (advisory, architecture/design/implementation, non-automated) */
 
-    /* not currently supported */
+    /* not statically checkable */
 
-/* Rule A2-11-1 (required, implementation, automated) */
+/* Rule M2-10-1 (required, architecture/design/implementation, automated) */
 
     /* not currently supported */
 
-/* Rule M2-10-3 (required, implementation, automated) */
+/* Rule A2-10-1 (required, architecture/design/implementation, automated) */
 
     /* not currently supported */
 
-/* Rule A2-11-2 (required, implementation, automated) */
+/* Rule A2-10-6 (required, implementation, automated) */
 
     /* not currently supported */
 
-/* Rule A2-11-3 (required, implementation, automated) */
+/* Rule A2-10-4 (required, implementation, automated) */
 
     /* not currently supported */
 
-/* Rule A2-11-4 (required, implementation, automated) */
+/* Rule A2-10-5 (advisory, design/implementation, automated) */
 
     /* not currently supported */
 
-/* Rule A2-11-5 (advisory, implementation, automated) */
+/* Rule A2-11-1 (required, design/implementation, automated) */
 
-    /* not currently supported */
+    /* 586 - keyword is deprecated */
+    +e586
+    +elib(586)
 
-/* Rule M2-10-6 (required, implementation, automated) */
+    -deprecate(keyword, volatile)
+    -append(586(volatile),[AUTOSAR Rule A2-11-1])
 
-    /* 18 - redefinition of symbol as different kind of symbol */
-    +e18
-    +elib(18)
-    -append(18,[AUTOSAR Rule M2-10-6])
-
-/* Rule A2-14-1 (required, implementation, automated) */
+/* Rule A2-13-1 (required, architecture/design/implementation, automated) */
 
     /* 606 - non-ANSI escape sequence */
     +e606
     +elib(606)
-    -append(606,[AUTOSAR Rule A2-14-1])
+    -append(606,[AUTOSAR Rule A2-13-1])
 
-/* Rule M2-13-2 (required, implementation, automated) */
+/* Rule A2-13-6 (required, architecture/design/implementation, automated) */
+
+    /* 9443 - universal-character-name used in identifier */
+    +e9443
+    +elib(9443)
+    -append(9443,[AUTOSAR Rule A2-13-6])
+
+/* Rule A2-13-5 (advisory, implementation, automated) */
+
+    /* 9439 - hexadecimal __integral|floating__ literal '__string__' should be upper case */
+    +e9439
+    +elib(9439)
+    -append(9439,[AUTOSAR Rule A2-13-5])
+
+/* Rule M2-13-2 (required, architecture/design/implementation, automated) */
 
     /* 9001 - octal constant used */
     +e9001
@@ -487,36 +507,43 @@
     +elib(9104)
     -append(9104,[AUTOSAR Rule M2-13-2])
 
-/* Rule M2-13-3 (required, implementation, automated) */
+/* Rule M2-13-3 (required, architecture/design/implementation, automated) */
 
     /* 9105 - unsigned octal and hexadecimal literals require a 'U' suffix */
     +e9105
     +elib(9105)
     -append(9105,[AUTOSAR Rule M2-13-3])
 
-/* Rule M2-13-4 (required, implementation, automated) */
+/* Rule M2-13-4 (required, architecture/design/implementation, automated) */
 
     /* 9106 - lower case literal suffix */
     +e9106
     +elib(9106)
     -append(9106,[AUTOSAR Rule M2-13-4])
 
-/* Rule A2-14-2 (required, implementation, automated) */
+/* Rule A2-13-2 (required, implementation, automated) */
 
     /* 1107 - invalid concatenation of wide string literals of different kinds */
     +e1107
     +elib(1107)
-    -append(1107,[AUTOSAR Rule A2-14-2])
+    -append(1107,[AUTOSAR Rule A2-13-2])
 
-/* Rule A2-14-3 (required, implementation, automated) */
+/* Rule A2-13-3 (required, architecture/design/implementation, automated) */
 
     /* 586 - type is deprecated */
     +e586
     +elib(586)
     -deprecate(type, wchar_t)
-    -append(586(wchar_t),[AUTOSAR Rule A2-14-3])
+    -append(586(wchar_t),[AUTOSAR Rule A2-13-3])
 
-/* Rule A3-1-1 (required, implementation, automated) */
+/* Rule A2-13-4 (required, architecture/design/implementation, automated) */
+
+    /* 1776 - converting string literal to type is not const safe */
+    +e1776
+    +elib(1776)
+    -append(1776,[AUTOSAR Rule A2-13-4])
+
+/* Rule A3-1-1 (required, architecture/design/implementation, automated) */
 
     /* 9107 - header cannot be included in more than one translation unit because
               of the definition of symbol */
@@ -524,11 +551,11 @@
     +elib(9107)
     -append(9107,[AUTOSAR Rule A3-1-1])
 
-/* Rule A3-1-2 (required, implementation, automated) */
+/* Rule A3-1-2 (required, architecture/design/implementation, automated) */
 
     /* not currently supported */
 
-/* Rule A3-1-3 (advisory, implementation, automated) */
+/* Rule A3-1-3 (advisory, architecture/design/implementation, automated) */
 
     /* not currently supported */
 
@@ -544,12 +571,23 @@
     +elib(1798)
     -append(1798,[AUTOSAR Rule M3-1-2])
 
-/* Rule A3-1-4 (required, implementation, automated) */
+/* Rule A3-1-4 (required, design/implementation, automated) */
 
     /* 9067 - extern array declared without size or initializer */
     +e9067
     +elib(9067)
     -append(9067,[AUTOSAR Rule A3-1-4])
+
+/* Rule A3-1-5 (required, design, partially-automated) */
+
+    /* 9449 - inlined member function is not marked as inline */
+    +e9449
+    +elib(9449)
+    -append(9449,[AUTOSAR Rule A3-1-5])
+
+/* Rule A3-1-6 (advisory, design, automated) */
+
+    /* not currently supported */
 
 /* Rule M3-2-1 (required, implementation, automated) */
 
@@ -592,10 +630,7 @@
 
 /* Rule A3-3-2 (required, implementation, automated) */
 
-    /* 1756 - variable has static/thread storage duration and non-POD type */
-    +e1756
-    +elib(1756)
-    -append(1756,[AUTOSAR Rule A3-3-2])
+    /* not currently supported */
 
 /* Rule M3-3-2 (required, implementation, automated) */
 
@@ -615,6 +650,10 @@
     +e9003
     +elib(9003)
     -append(9003,[AUTOSAR Rule M3-4-1])
+
+/* Rule A3-8-1 (required, implementation, not automated) */
+
+    /* not statically checkable */
 
 /* Rule M3-9-1 (required, implementation, automated) */
 
@@ -715,7 +754,7 @@
 
     /* not currently supported */
 
-/* Rule A4-10-1 (required, implementation, automated) */
+/* Rule A4-10-1 (required, architecture/design/implementation, automated) */
 
     /* 910 - implicit conversion of null pointer constant to pointer */
     +e910
@@ -890,6 +929,10 @@
     +elib(947)
     -append(947,[AUTOSAR Rule M5-0-17])
 
+/* Rule A5-0-4 (required, implementation, automated) */
+
+    /* not currently supported */
+
 /* Rule M5-0-18 (required, implementation, automated) */
 
     /* 946 - relational operator applied to pointers */
@@ -938,10 +981,6 @@
 
     /* not currently supported */
 
-/* Rule A5-1-5 (advisory, implementation, non-automated) */
-
-    /* not currently supported */
-
 /* Rule A5-1-6 (advisory, implementation, automated) */
 
     /* 3903 - lambda return type not explicitly specified */
@@ -963,12 +1002,9 @@
     +elib(9442)
     -append(9442,[AUTOSAR Rule A5-1-8])
 
-/* Rule M5-2-1 (required, implementation, automated) */
+/* Rule A5-1-9 (advisory, implementation, automated) */
 
-    /* 9131 - left/right side of logical operator is not a postfix expression */
-    +e9131
-    +elib(9131)
-    -append(9131,[AUTOSAR Rule M5-2-1])
+    /* not currently supported */
 
 /* Rule M5-2-2 (required, implementation, automated) */
 
@@ -1032,6 +1068,13 @@
 
     -deprecate(keyword, reinterpret_cast)
     -append(586(reinterpret_cast),[AUTOSAR Rule A5-2-4])
+
+/* Rule A5-2-6 (required, implementation, automated) */
+
+    /* 9131 - left/right side of logical operator is not a postfix expression */
+    +e9131
+    +elib(9131)
+    -append(9131,[AUTOSAR Rule A5-2-6])
 
 /* Rule M5-2-8 (required, implementation, automated) */
 
@@ -1131,12 +1174,38 @@
     +elib(9414)
     -append(9414,[AUTOSAR Rule A5-3-1])
 
+/* Rule A5-3-2 (required, implementation, partially automated) */
+
+    +fnr    /* Assume functions can return null pointers by default */
+    +fpn    /* Assume pointer arguments may be null */
+
+    /* 413 - likely use of null pointer */
+    +e413
+    +elib(413)
+    -append(413,[AUTOSAR Rule A5-3-2])
+
+    /* 613 - potential use of null pointer */
+    +e613
+    +elib(613)
+    -append(613,[AUTOSAR Rule A5-3-2])
+
+/* Rule A5-3-3 (required, implementation, automated) */
+
+    /* 1404 - deleting an object of type before that type is defined */
+    +e1404
+    +elib(1404)
+    -append(1404,[AUTOSAR Rule A5-3-3])
+
 /* Rule A5-5-1 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A5-6-1 (required, implementation, automated) */
 
     /* 414 - possible division by zero */
     +e414
     +elib(414)
-    -append(414,[AUTOSAR Rule A5-5-1])
+    -append(414,[AUTOSAR Rule A5-6-1])
 
 /* Rule M5-8-1 (required, implementation, partially automated) */
 
@@ -1163,7 +1232,7 @@
 
 /* Rule M5-17-1 (required, implementation, non-automated) */
 
-    /* not currently supported */
+    /* not statically checkable */
 
 /* Rule M5-18-1 (required, implementation, automated) */
 
@@ -1192,6 +1261,14 @@
     +e9084
     +elib(9084)
     -append(9084,[AUTOSAR Rule M6-2-1])
+
+/* Rule A6-2-1 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A6-2-2 (required, implementation, automated) */
+
+    /* not currently supported */
 
 /* Rule M6-2-2 (required, implementation, partially automated) */
 
@@ -1317,6 +1394,17 @@
 
     /* not currently supported */
 
+/* Rule A6-5-3 (advisory, implementation, automated) */
+
+    /* 9456 - do statement used outside statement-like macro */
+    +e9456
+    +elib(9456)
+    -append(9456,[AUTOSAR Rule A6-5-3])
+
+/* Rule A6-5-4 (advisory, implementation, automated) */
+
+    /* not currently supported */
+
 /* Rule A6-6-1 (required, implementation, automated) */
 
     /* 801 - goto statement used */
@@ -1429,6 +1517,13 @@
     +elib(2618)
     -append(2618,[AUTOSAR Rule A7-1-8])
 
+/* Rule A7-1-9 (required, implementation, automated) */
+
+    /* 9428 - class, structure, union, or enumeration object declared with the definition of type */
+    +e9428
+    +elib(9428)
+    -append(9428,[AUTOSAR Rule A7-1-9])
+
 /* Rule A7-2-1 (required, implementation, automated) */
 
     /* not currently supported */
@@ -1453,6 +1548,10 @@
     +e9148
     +elib(9148)
     -append(9148,[AUTOSAR Rule A7-2-4])
+
+/* Rule A7-2-5 (advisory, design, non-automated) */
+
+    /* not statically checkable */
 
 /* Rule M7-3-1 (required, implementation, automated) */
 
@@ -1487,7 +1586,7 @@
     +elib(9144)
     -append(9144,[AUTOSAR Rule M7-3-4])
 
-/* Rule M7-3-5 (required, implementation, automated) */
+/* Rule A7-3-1 (required, implementation, automated) */
 
     /* not currently supported */
 
@@ -1549,6 +1648,13 @@
     +elib(9070)
     -append(9070,[AUTOSAR Rule A7-5-2])
 
+/* Rule A7-6-1 (required, implementation, automated) */
+
+    /* 2436 - function declared 'noreturn' should not return */
+    +e2436
+    +elib(2436)
+    -append(2436,[AUTOSAR Rule A7-6-1])
+
 /* Rule M8-0-1 (required, implementation, automated) */
 
     /* 9146 - multiple declarators in a declaration */
@@ -1602,12 +1708,60 @@
     +elib(9147)
     -append(9147,[AUTOSAR Rule M8-4-4])
 
-/* Rule M8-5-1 (required, implementation, automated) */
+/* Rule A8-4-3 (advisory, design, non-automated) */
+
+    /* not statically checkable */
+
+/* Rule A8-4-4 (advisory, design, automated) */
+
+    /* not currently supported */
+
+/* Rule A8-4-5 (required, design, automated) */
+
+    /* not currently supported */
+
+/* Rule A8-4-6 (required, design, automated) */
+
+    /* not currently supported */
+
+/* Rule A8-4-7 (required, design, automated) */
+
+    /* not currently supported */
+
+/* Rule A8-4-8 (required, design, automated) */
+
+    /* not currently supported */
+
+/* Rule A8-4-9 (required, design, automated) */
+
+    /* not currently supported */
+
+/* Rule A8-4-10 (required, design, automated) */
+
+    /* not currently supported */
+
+/* Rule A8-4-11 (required, design, automated) */
+
+    /* not currently supported */
+
+/* Rule A8-4-12 (required, design, automated) */
+
+    /* not currently supported */
+
+/* Rule A8-4-13 (required, design, automated) */
+
+    /* not currently supported */
+
+/* Rule A8-4-14 (required, design, non-automated) */
+
+    /* not statically checkable */
+
+/* Rule A8-5-0 (required, implementation, automated) */
 
     /* 530 - likely using an uninitialized value */
     +e530
     +elib(530)
-    -append(530,[AUTOSAR Rule M8-5-1])
+    -append(530,[AUTOSAR Rule A8-5-0])
 
 /* Rule A8-5-1 (required, implementation, automated) */
 
@@ -1634,15 +1788,15 @@
     +elib(9415)
     -append(9415,[AUTOSAR Rule A8-5-3])
 
-/* Rule A8-5-4 (advisory, implementation, non-automated) */
+/* Rule A8-5-4 (advisory, implementation, automated) */
 
-    /* not statically checkable */
+    /* not currently supported */
 
 /* Rule M9-3-1 (required, implementation, automated) */
 
     /* not currently supported */
 
-/* Rule A9-3-1 (required, implementation, automated) */
+/* Rule A9-3-1 (required, implementation, partially automated) */
 
     /* not currently supported */
 
@@ -1653,23 +1807,39 @@
     +elib(1762)
     -append(1762,[AUTOSAR Rule M9-3-3])
 
-/* Rule M9-5-1 (required, implementation, automated) */
+/* Rule A9-5-1 (required, implementation, automated) */
 
     /* 9018 - union declared */
     +e9018
     +elib(9018)
-    -append(9018,[AUTOSAR Rule M9-5-1])
+    -append(9018,[AUTOSAR Rule A9-5-1])
 
 /* Rule M9-6-1 (required, implementation, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A9-6-1 (required, implementation, automated) */
+/* Rule A9-6-1 (required, design, partially automated) */
 
-    /* 9420 - bitfield does not have unsigned integer or explicitly unsigned enumeration type */
-    +e9420
-    +elib(9420)
-    -append(9420,[AUTOSAR Rule A9-6-1])
+    /* not currently supported */
+
+/* Rule A9-6-2 (required, design, non-automated) */
+
+    /* not statically checkable */
+
+/* Rule M9-6-4 (required, implementation, automated) */
+
+    /* 9088 - named signed single-bit bitfield */
+    +e9088
+    +elib(9088)
+    -append(9088,[AUTOSAR Rule M9-6-4])
+
+/* Rule A10-0-1 (required, design, non-automated) */
+
+    /* not statically checkable */
+
+/* Rule A10-0-2 (required, design, non-automated) */
+
+    /* not statically checkable */
 
 /* Rule A10-1-1 (required, implementation, automated) */
 
@@ -1703,9 +1873,10 @@
 /* Rule A10-2-1 (required, implementation, automated) */
 
     /* 1511 - member hides non-virtual member */
-    +e1511
+    +estring(1511,public,protected)
     +elib(1511)
-    -append(1511,[AUTOSAR Rule A10-2-1])
+    -append(1511(public),[AUTOSAR Rule A10-2-1])
+    -append(1511(protected),[AUTOSAR Rule A10-2-1])
 
 /* Rule A10-3-1 (required, implementation, automated) */
 
@@ -1752,6 +1923,10 @@
     +elib(9170)
     -append(9170,[AUTOSAR Rule M10-3-3])
 
+/* Rule A10-4-1 (advisory, design, non-automated) */
+
+    /* not statically checkable */
+
 /* Rule M11-0-1 (required, implementation, automated) */
 
     /* 9150 - non-private data member within a non-POD structure */
@@ -1777,9 +1952,24 @@
     +elib(9435)
     -append(9435,[AUTOSAR Rule A11-3-1])
 
+    /* Comparison operators are exempt from this Rule */
+    -esym(9435,"[*::]operator==")
+    -esym(9435,"[*::]operator!=")
+    -esym(9435,"[*::]operator>=")
+    -esym(9435,"[*::]operator<=")
+    -esym(9435,"[*::]operator>")
+    -esym(9435,"[*::]operator<")
+
 /* Rule A12-0-1 (required, implementation, automated) */
 
     /* not currently supported */
+
+/* Rule A12-0-2 (required, implementation, partially automated) */
+
+    /* 1415 - pointer to non-POD type passed to function */
+    +e1415
+    +elib(1415)
+    -append(1415,[AUTOSAR Rule A12-0-2])
 
 /* Rule A12-1-1 (required, implementation, automated) */
 
@@ -1814,6 +2004,14 @@
     +e9169
     +elib(9169)
     -append(9169,[AUTOSAR Rule A12-1-4])
+
+/* Rule A12-1-5 (required, implementation, partially automated) */
+
+    /* not currently supported */
+
+/* Rule A12-1-6 (required, implementation, automated) */
+
+    /* not currently supported */
 
 /* Rule A12-4-1 (required, implementation, automated) */
 
@@ -1868,18 +2066,6 @@
     +elib(9185)
     -append(9185,[AUTOSAR Rule A12-8-7])
 
-/* Rule A13-1-1 (required, implementation, automated) */
-
-    /* 9433 - literal operator function declared */
-    +e9433
-    +elib(9433)
-    -append(9433,[AUTOSAR Rule A13-1-1])
-
-    /* 9434 - user-defined literal with suffix used */
-    +e9434
-    +elib(9434)
-    -append(9434,[AUTOSAR Rule A13-1-1])
-
 /* Rule A13-1-2 (required, implementation, automated) */
 
     /* not currently supported */
@@ -1922,6 +2108,41 @@
     +elib(9187)
     -append(9187,[AUTOSAR Rule A13-5-1])
 
+/* Rule A13-5-2 (required, implementation, automated) */
+
+    /* 1930 - (non-explicit) conversion operator found */
+    +e1930
+    +elib(1930)
+    -append(1930,[AUTOSAR Rule A13-5-2])
+
+/* Rule A13-5-3 (advisory, implementation, automated) */
+
+    /* 1912 - implicit call of conversion function */
+    +e1912
+    +elib(1912)
+    -append(1912,[AUTOSAR Rule A13-5-3])
+
+/* Rule A13-5-4 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A13-5-5 (required, implementation, automated) */
+
+    /* 9444 - user declared comparison operator is a member function */
+    +e9444
+    +elib(9444)
+    -append(9444,[AUTOSAR Rule A13-5-5])
+
+    /* 9445 - user declared comparison operator is not noexcept */
+    +e9445
+    +elib(9445)
+    -append(9445,[AUTOSAR Rule A13-5-5])
+
+    /* 9446 - user declared comparison operator does not have identical parameter types */
+    +e9446
+    +elib(9446)
+    -append(9446,[AUTOSAR Rule A13-5-5])
+
 /* Rule A13-6-1 (required, implementation, automated) */
 
     /* 9440 - Digit sequence separators in STRING TYPE literal 'STRING' should be every INTEGER digits */
@@ -1933,12 +2154,17 @@
 
     /* not statically checkable */
 
-/* Rule M14-5-2 (required, implementation, automated) */
+/* Rule A14-5-1 (required, implementation, automated) */
 
-    /* 1789 - constructor template cannot be a copy constructor */
-    +e1789
-    +elib(1789)
-    -append(1789,[AUTOSAR Rule M14-5-2])
+    /* not currently supported */
+
+/* Rule A14-5-2 (advisory, design, partially-automated) */
+
+    /* not currently supported */
+
+/* Rule A14-5-3 (advisory, design, automated) */
+
+    /* not currently supported */
 
 /* Rule M14-5-3 (required, implementation, automated) */
 
@@ -1955,30 +2181,22 @@
 
     /* not currently supported */
 
-/* Rule M14-7-3 (required, implementation, automated) */
+/* Rule A14-7-2 (required, implementation, automated) */
 
-    /* 1576 - explicit specialization is not in the same file as specialized
-              function template */
+    /* 1576 - explicit specialization is not in the same file as specialized function template */
     +e1576
     +elib(1576)
-    -append(1576,[AUTOSAR Rule M14-7-3])
+    -append(1576,[AUTOSAR Rule A14-7-2])
 
-/* Rule M14-8-1 (required, implementation, automated) */
+/* Rule A14-8-2 (required, implementation, automated) */
 
     /* not currently supported */
 
-/* Rule A14-8-1 (advisory, implementation, automated) */
-
-    /* 9153 - viable set contains both function and template */
-    +e9153
-    +elib(9153)
-    -append(9153,[AUTOSAR Rule A14-8-1])
-
-/* Rule A15-0-1 (required, implementation, non-automated) */
+/* Rule A15-0-1 (required, architecture/design/implementation, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A15-0-2 (required, implementation, partially automated) */
+/* Rule A15-0-2 (required, architecture/design/implementation, partially automated) */
 
     /* not currently supported */
 
@@ -1986,27 +2204,27 @@
 
     /* not statically checkable */
 
-/* Rule A15-0-4 (required, implementation, non-automated) */
+/* Rule A15-0-4 (required, architecture/design/implementation, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A15-0-5 (required, implementation, non-automated) */
+/* Rule A15-0-5 (required, architecture/design/implementation, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A15-0-6 (required, verification, non-automated) */
+/* Rule A15-0-6 (required, verification/toolchain, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A15-0-7 (required, implementation, partially automated) */
+/* Rule A15-0-7 (required, verification/toolchain, partially automated) */
 
     /* not currently supported */
 
-/* Rule A15-0-8 (required, implementation, non-automated) */
+/* Rule A15-0-8 (required, verification/toolchain, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A15-1-1 (required, implementation, automated) */
+/* Rule A15-1-1 (advisory, implementation, automated) */
 
     /* 3902 - thrown object of type is not a class derived from std::exception */
     +e3902
@@ -2067,15 +2285,11 @@
 
     /* not currently supported */
 
-/* Rule A15-3-1 (advisory, implementation, automated) */
-
-    /* not currently supported */
-
 /* Rule A15-3-2 (required, implementation, non-automated) */
 
     /* not statically checkable */
 
-/* Rule A15-3-3 (required, implementation, automated) */
+/* Rule A15-3-3 (required, implementation, partially automated) */
 
     /* not currently supported */
 
@@ -2085,7 +2299,7 @@
 
 /* Rule M15-3-3 (required, implementation, automated) */
 
-    /* not statically checkable */
+    /* not currently supported */
 
 /* Rule M15-3-4 (required, implementation, automated) */
 
@@ -2132,10 +2346,6 @@
     /* not currently supported */
 
 /* Rule A15-4-5 (required, implementation, automated) */
-
-    /* not currently supported */
-
-/* Rule A15-4-6 (advisory, implementation, automated) */
 
     /* not currently supported */
 
@@ -2346,6 +2556,10 @@
 
     /* not currently supported */
 
+/* Rule A17-0-2 (required, implementation, non-automated) */
+
+    /* not statically checkable */
+
 /* Rule M17-0-5 (required, implementation, automated) */
 
     /* 586 - symbol is deprecated */
@@ -2359,6 +2573,10 @@
 /* Rule A17-1-1 (required, implementation, non-automated) */
 
     /* not statically checkable */
+
+/* Rule A17-6-1 (required, implementation, automated) */
+
+    /* not currently supported */
 
 /* Rule A18-0-1 (required, implementation, automated) */
 
@@ -2505,7 +2723,7 @@
     -deprecate(function,setlocale,[AUTOSAR Rule A18-0-3])
     -deprecate(function,std::setlocale,[AUTOSAR Rule A18-0-3])
 
-/* Rule A18-1-1 (advisory, implementation, automated) */
+/* Rule A18-1-1 (required, implementation, automated) */
 
     /* 9436 - symbol has array type */
     +e9436
@@ -2524,7 +2742,7 @@
 
     /* not currently supported */
 
-/* Rule A18-1-5 (required, implementation, automated) */
+/* Rule A18-1-6 (required, implementation, automated) */
 
     /* not currently supported */
 
@@ -2567,17 +2785,33 @@
 
     /* not currently supported */
 
-/* Rule A18-5-5 (required, implementation, partially automated) */
+/* Rule A18-5-5 (required, toolchain, partially automated) */
 
-    /* not statically checkable */
+    /* not currently supported */
 
-/* Rule A18-5-6 (required, implementation, non-automated) */
+/* Rule A18-5-6 (required, verification/toolchain, non-automated) */
 
     /* not statically checkable */
 
 /* Rule A18-5-7 (required, implementation, non-automated) */
 
     /* not statically checkable */
+
+/* Rule A18-5-8 (required, implementation, partially automated) */
+
+    /* not currently supported */
+
+/* Rule A18-5-9 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A18-5-10 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A18-5-11 (required, implementation, automated) */
+
+    /* not currently supported */
 
 /* Rule M18-7-1 (required, implementation, automated) */
 
@@ -2615,7 +2849,65 @@
 
     -deprecate(variable,errno,[AUTOSAR Rule M19-3-1] )
 
+/* Rule A20-8-1 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A20-8-2 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A20-8-3 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A20-8-4 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A20-8-5 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A20-8-6 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A20-8-7 (required, implementation, non-automated) */
+
+    /* not statically checkable */
+
+/* Rule A21-8-1 (required, implementation, automated) */
+
+    /* not currently supported */
+
 /* Rule A23-0-1 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A23-0-2 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A25-1-1 (required, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A25-4-1 (required, implementation, non-automated) */
+
+    /* not statically checkable */
+
+/* Rule A26-5-1 (required, implementation, automated) */
+
+    /* 586 - function is deprecated */
+    +e586
+    +elib(586)
+
+    -deprecate(function,rand,[AUTOSAR Rule A26-5-1])
+    -deprecate(function,std::rand,[AUTOSAR Rule A26-5-1])
+    -deprecate(function,std::random_shuffle,[AUTOSAR Rule A26-5-1])
+
+/* Rule A26-5-2 (required, implementation, automated) */
 
     /* not currently supported */
 
@@ -2767,7 +3059,16 @@
 
     /* not statically checkable */
 
-/* Rule A27-0-2 (required, implementation, automated) */
+/* Rule A27-0-4 (required, implementation, automated) */
 
     /* not currently supported */
+
+/* Rule A27-0-2 (advisory, implementation, automated) */
+
+    /* not currently supported */
+
+/* Rule A27-0-3 (required, implementation, automated) */
+
+    /* not currently supported */
+
 

@@ -1,7 +1,7 @@
 //============================================================================
 // Product: DPP example, STM32 NUCLEO-L152RE board, cooperative QV kernel
-// Last updated for version 6.9.3
-// Last updated on  2021-03-03
+// Last updated for version 7.2.1
+// Last updated on  2023-01-26
 //
 //                    Q u a n t u m  L e a P s
 //                    ------------------------
@@ -178,10 +178,10 @@ void BSP::init(void) {
 //............................................................................
 void BSP::displayPhilStat(uint8_t n, char const *stat) {
     if (stat[0] == 'h') {
-        GPIOA->BSRRL |= LED_LD2;  // turn LED on
+        GPIOA->BSRRL = LED_LD2;  // turn LED on
     }
     else {
-        GPIOA->BSRRH |= LED_LD2;  // turn LED off
+        GPIOA->BSRRH = LED_LD2;  // turn LED off
     }
 
     QS_BEGIN_ID(PHILO_STAT, AO_Philo[n]->m_prio) // app-specific record begin
@@ -192,11 +192,11 @@ void BSP::displayPhilStat(uint8_t n, char const *stat) {
 //............................................................................
 void BSP::displayPaused(uint8_t paused) {
     // not enough LEDs to implement this feature
-    if (paused != (uint8_t)0) {
-        //GPIOA->BSRRL |= LED_LD2;  // turn LED on
+    if (paused != 0U) {
+        //GPIOA->BSRRL = LED_LD2;  // turn LED on
     }
     else {
-        //GPIOA->BSRRH |= LED_LD2;  // turn LED off
+        //GPIOA->BSRRH = LED_LD2;  // turn LED off
     }
 }
 //............................................................................
@@ -251,8 +251,8 @@ void QF::onCleanup(void) {
 //............................................................................
 void QV::onIdle(void) { // called with interrupts disabled, see NOTE01
     // toggle the User LED on and then off (not enough LEDs, see NOTE02)
-    //GPIOA->BSRRL |= LED_LD2;  // turn LED on
-    //GPIOA->BSRRH |= LED_LD2;  // turn LED off
+    //GPIOA->BSRRL = LED_LD2;  // turn LED on
+    //GPIOA->BSRRH = LED_LD2;  // turn LED off
 
 #ifdef Q_SPY
     QF_INT_ENABLE();

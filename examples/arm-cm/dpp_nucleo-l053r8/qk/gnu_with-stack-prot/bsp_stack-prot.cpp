@@ -1,7 +1,7 @@
 //============================================================================
 // Product: DPP example, STM32 NUCLEO-L053R8 board, preemptive QK kernel
-// Last updated for version 6.9.3
-// Last updated on  2021-03-03
+// Last updated for version 7.2.1
+// Last updated on  2023-01-26
 //
 //                    Q u a n t u m  L e a P s
 //                    ------------------------
@@ -173,10 +173,10 @@ void BSP::init(void) {
 //............................................................................
 void BSP::displayPhilStat(uint8_t n, char const *stat) {
     if (stat[0] == 'h') {
-        GPIOA->BSRR |= LED_LD2;  // turn LED on
+        GPIOA->BSRR = LED_LD2;  // turn LED on
     }
     else {
-        GPIOA->BSRR |= (LED_LD2 << 16);  // turn LED off
+        GPIOA->BSRR = (LED_LD2 << 16);  // turn LED off
     }
 
     QS_BEGIN_ID(PHILO_STAT, AO_Philo[n]->m_prio) // app-specific record begin
@@ -188,10 +188,10 @@ void BSP::displayPhilStat(uint8_t n, char const *stat) {
 void BSP::displayPaused(uint8_t paused) {
     // not enough LEDs to implement this feature
     if (paused != (uint8_t)0) {
-        //GPIOA->BSRR |= (LED_LD2);  // turn LED[n] on
+        //GPIOA->BSRR = (LED_LD2);  // turn LED[n] on
     }
     else {
-        //GPIOA->BSRR |= (LED_LD2 << 16);  // turn LED[n] off
+        //GPIOA->BSRR = (LED_LD2 << 16);  // turn LED[n] off
     }
 }
 //............................................................................
@@ -247,8 +247,8 @@ void QF::onCleanup(void) {
 void QK::onIdle(void) {
     // toggle the User LED on and then off (not enough LEDs, see NOTE01)
     QF_INT_DISABLE();
-    //GPIOA->BSRR |= (LED_LD2);        // turn LED[n] on
-    //GPIOA->BSRR |= (LED_LD2 << 16);  // turn LED[n] off
+    //GPIOA->BSRR = (LED_LD2);        // turn LED[n] on
+    //GPIOA->BSRR = (LED_LD2 << 16);  // turn LED[n] off
     QF_INT_ENABLE();
 
 #ifdef Q_SPY
