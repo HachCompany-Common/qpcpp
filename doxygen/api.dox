@@ -1,22 +1,26 @@
 /*! @page api API Reference
-@nav_next{deprecated}
+@ifnot LATEX
+@nav{tut_low,deprecated}
+@endif
 
 @section api_qep QEP (Hierarchical State Machines)
 QEP is a universal, UML-compliant event processor that enables developers to code UML state machines in highly readable ANSI-C, in which every state machine element is mapped to code precisely, unambiguously, and exactly once (traceability). QEP fully supports hierarchical state nesting, which is the fundamental mechanism for reusing behavior across many states instead of repeating the same actions and transitions over and over again.
 
 
 @subsection api_qep_hsm Hierarchical State Machines
-- QHsm class
-- QHsm::QHsm()
-- QHsm::init()
-- QHsm::dispatch()
-- QHsm::isIn()
-- QHsm::state()
-- QHsm::top()
-- QMsm class
-- QMsm::QMsm()
-- QMsm::isInState()
-- QMsm::stateObj()
+<b>QP::QHsm class</b>
+- QP::QHsm::QHsm()
+- QP::QHsm::init()
+- QP::QHsm::dispatch()
+- QP::QHsm::isIn()
+- QP::QHsm::state()
+- QP::QHsm::top()
+- Q_STATE_CAST()
+
+<b>QP::QMsm class (derived from QP::QHsm)</b>
+- QP::QMsm::QMsm()
+- QP::QMsm::isInState()
+- QP::QMsm::stateObj()
 - Q_STATE_CAST()
 
 
@@ -25,68 +29,68 @@ QF is a portable, event-driven, real-time framework for execution of active obje
 
 
 @subsection api_qf_act Active Objects
-- QActive class
-- QActive::QActive()
-- QActive::start()
+<b>QP::QActive class</b>
+- QP::QActive::QActive()
+- QP::QActive::start()
 - %QActive:: POST()
 - %QActive:: POST_X()
-- QActive::postLIFO()
-- QActive::defer()
-- QActive::recall()
-- QActive::flushDeferred()
-- QActive::stop()
-- QMActive class
-- QMActive::QMActive()
+- QP::QActive::postLIFO()
+- QP::QActive::defer()
+- QP::QActive::recall()
+- QP::QActive::flushDeferred()
+- QP::QActive::stop()
 
+<b>Publish-Subscribe</b>
+- QP::QActive::psInit()
+- QP::QActive::subscribe()
+- QP::QActive::unsubscribe()
+- QP::QActive::unsubscribeAll()
+- %QActive:: PUBLISH()
 
-@subsection api_qf_ps Publish-Subscribe
-- ::QSubscrList (Subscriber List struct)
-- QActive::psInit()
-- %QF:: PUBLISH()
-- QActive::subscribe()
-- QActive::unsubscribe()
-- QActive::unsubscribeAll()
+<b>QP::QMActive class (derived from QP::QActive)</b>
+- QP::QMActive::QMActive()
 
 
 @subsection api_qf_evt Event Management
-- QEvt class
+<b>QP::QEvt class</b>
+- Q_EVT_CAST()
 - Q_NEW()
 - Q_NEW_X()
 - Q_NEW_REF()
 - Q_DELETE_REF()
-- QF::gc()
-- Q_EVT_CAST()
+- QP::QF::gc()
 
 
 @subsection api_qf_time Time Events
-- QTimeEvt class
-- QTimeEvt::QTimeEvt()
-- QTimeEvt::armX()
-- QTimeEvt::disarm()
-- QTimeEvt::rearm()
-- QTimeEvt::currCtr()
-- QTicker active object
+<b>QP::QTimeEvt class</b>
+- QP::QTimeEvt::QTimeEvt()
+- QP::QTimeEvt::armX()
+- QP::QTimeEvt::disarm()
+- QP::QTimeEvt::rearm()
+- QP::QTimeEvt::currCtr()
+
+<b>QP::QTicker active object</b>
 - %QF:: TICK()
 - %QF:: TICK_X()
 
 
 @subsection api_qf_queue Event Queues (raw thread-safe)
-- QEQueue class
-- QEQueue::init()
-- QEQueue::post()
-- QEQueue::postLIFO()
-- QEQueue::get()
-- QEQueue::getNFree()
-- QEQueue::getNMin()
-- QEQueue::isEmpty()
-- QEQueueCtr()
+<b>QP::QEQueue class</b>
+- QP::QEQueue::init()
+- QP::QEQueue::post()
+- QP::QEQueue::postLIFO()
+- QP::QEQueue::get()
+- QP::QEQueue::getNFree()
+- QP::QEQueue::getNMin()
+- QP::QEQueue::isEmpty()
+- QP::QEQueueCtr()
 
 
 @subsection api_qf_mem Memory Pools
-- QMPool class
-- QMPool::init()
-- QMPool::get()
-- QMPool::put()
+<b>QMPool class</b>
+- QP::QMPool::init()
+- QP::QMPool::get()
+- QP::QMPool::put()
 
 
 @section api_qs QS ("Quantum Spy" Software Tracing)
@@ -95,20 +99,13 @@ QS is a software tracing system that enables developers to monitor live event-dr
 
 @subsection api_qs_ini QS Initialization and Control
 - QS_INIT()
-- QS::initBuf()
-- QS::getByte()
-- QS::getBlock()
-- QS::onStartup()
-- QS::onCleanup()
-- QS::onFlush()
-- QS::onGetTime()
-
-
-@subsection api_qs_rx QS Receive-Channel (QS-RX)
-- QS::rxInitBuf()
-- QS::rxPut()
-- QS::rxParse()
-- QS::onCommand()
+- QP::QS::initBuf()
+- QP::QS::getByte()
+- QP::QS::getBlock()
+- QP::QS::onStartup()
+- QP::QS::onCleanup()
+- QP::QS::onFlush()
+- QP::QS::onGetTime()
 
 
 @subsection api_qs_filter QS Filters
@@ -126,7 +123,7 @@ QS is a software tracing system that enables developers to monitor live event-dr
 
 
 @subsection api_qs_user QS Application-Specific Records
-- ::QS_USER enumeration
+- QP::QS_USER enumeration
 - QS_BEGIN_ID()
 - QS_END()
 - QS_U8() / QS_I8()
@@ -135,6 +132,13 @@ QS is a software tracing system that enables developers to monitor live event-dr
 - QS_U32_HEX()
 - QS_STR()
 - QS_MEM()
+
+
+@subsection api_qs_rx QS Receive-Channel (QS-RX)
+- QP::QS::rxInitBuf()
+- QP::QS::rxPut()
+- QP::QS::rxParse()
+- QP::QS::onCommand()
 
 
 @section api_qv QV (Cooperative Kernel)
@@ -230,13 +234,14 @@ QXK is a small, preemptive, priority-based, dual-mode **blocking** kernel that e
 - QMPool::get()
 - QMPool::put()
 
-<br>
-@nav_next{deprecated}
+@ifnot LATEX
+@nav{tut_low,deprecated}
+@endif
 */
 /*##########################################################################*/
 /*! @page deprecated Deprecated APIs
 
-__The following QP/C++ APIs are now deprecated:__
+<b>The following QP/C++ APIs are now deprecated:</b>
 */
 
 /*##########################################################################*/

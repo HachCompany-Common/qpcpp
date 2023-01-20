@@ -1,7 +1,7 @@
 ##############################################################################
-# Product: Makefile for QP/C++ for Windows and POSIX *HOSTS*
-# Last updated for version 7.2.0
-# Last updated on  2022-11-13
+# Product: Makefile for QEP/C++ for Windows and POSIX *HOSTS*
+# Last updated for version 7.2.2
+# Last updated on  2023-02-13
 #
 #                    Q u a n t u m  L e a P s
 #                    ------------------------
@@ -36,14 +36,13 @@
 # building configurations: Debug (default), Release, and Spy
 # make
 # make CONF=rel
-# make CONF=spy
 # make clean   # cleanup the build
-# make CONF=spy clean   # cleanup the build
+# make CONF=rel clean   # cleanup the build
 #
 # NOTE:
 # To use this Makefile on Windows, you will need the GNU make utility, which
 # is included in the QTools collection for Windows, see:
-#    http://sourceforge.net/projects/qpc/files/QTools/
+#    https://github.com/QuantumLeaps/qtools
 #
 
 #-----------------------------------------------------------------------------
@@ -56,10 +55,10 @@ PROJECT := qhsmtst
 #
 
 # list of all source directories used by this project
-VPATH := . \
+VPATH := .
 
 # list of all include directories needed by this project
-INCLUDES := -I. \
+INCLUDES := -I.
 
 # location of the QP/C framework (if not provided in an env. variable)
 ifeq ($(QPCPP),)
@@ -78,8 +77,8 @@ CPP_SRCS := \
 	main.cpp \
 	qhsmtst.cpp
 
-LIB_DIRS  :=
-LIBS      :=
+LIB_DIRS :=
+LIBS     :=
 
 # defines...
 # QP_API_VERSION controls the QP API compatibility; 9999 means the latest API
@@ -93,51 +92,7 @@ endif
 # add QP/C++ framework:
 #
 CPP_SRCS += \
-	qep_hsm.cpp \
-	qep_msm.cpp \
-	qf_act.cpp \
-	qf_actq.cpp \
-	qf_defer.cpp \
-	qf_dyn.cpp \
-	qf_mem.cpp \
-	qf_ps.cpp \
-	qf_qact.cpp \
-	qf_qeq.cpp \
-	qf_qmact.cpp \
-	qf_time.cpp \
-	qf_port.cpp
-
-QS_SRCS := \
-	qs.cpp \
-	qs_64bit.cpp \
-	qs_rx.cpp \
-	qs_fp.cpp \
-	qs_port.cpp
-
-ifeq ($(OS),Windows_NT)
-
-# NOTE:
-# For Windows hosts, you can choose:
-# - the single-threaded QP/C++ port (win32-qv) or
-# - the multithreaded QP/C++ port (win32).
-#
-QP_PORT_DIR := $(QPCPP)/ports/win32-qv
-#QP_PORT_DIR := $(QPCPP)/ports/win32
-LIBS += -lws2_32
-
-else
-
-# NOTE:
-# For POSIX hosts (Linux, MacOS), you can choose:
-# - the single-threaded QP/C++ port (win32-qv) or
-# - the multithreaded QP/C++ port (win32).
-#
-QP_PORT_DIR := $(QPCPP)/ports/posix-qv
-#QP_PORT_DIR := $(QPCPP)/ports/posix
-
-LIBS += -lpthread
-
-endif
+	qep_hsm.cpp
 
 #============================================================================
 # Typically you should not need to change anything below this line
@@ -150,8 +105,8 @@ INCLUDES += -I$(QPCPP)/include -I$(QP_PORT_DIR)
 #
 # NOTE:
 # GNU toolset (MinGW) is included in the QTools collection for Windows, see:
-#     https://www.state-machine.com/qtools
-# It is assumed that %QTOOLS%\bin directory is added to the PATH
+#     https://github.com/QuantumLeaps/qtools
+# It is assumed that $(QTOOLS)/bin directory is added to the PATH
 #
 CC    := gcc
 CPP   := g++
@@ -191,19 +146,6 @@ CPPFLAGS = -c -O3 -fno-pie -std=c++11 -pedantic -Wall -Wextra \
 
 else ifeq (spy, $(CONF))  # Spy configuration ................................
 
-BIN_DIR := build_spy
-
-CPP_SRCS += $(QS_SRCS)
-VPATH    += $(QPCPP)/src/qs
-
-# gcc options:
-CFLAGS  = -c -g -O -fno-pie -std=c11 -pedantic -Wall -Wextra -W \
-	$(INCLUDES) $(DEFINES) -DQ_SPY
-
-CPPFLAGS = -c -g -O -fno-pie -std=c++11 -pedantic -Wall -Wextra \
-	-fno-rtti -fno-exceptions \
-	$(INCLUDES) $(DEFINES) -DQ_SPY
-
 else # default Debug configuration .........................................
 
 BIN_DIR := build
@@ -232,6 +174,11 @@ C_DEPS_EXT   := $(patsubst %.o,%.d, $(C_OBJS_EXT))
 CPP_OBJS_EXT := $(addprefix $(BIN_DIR)/, $(CPP_OBJS))
 CPP_DEPS_EXT := $(patsubst %.o,%.d, $(CPP_OBJS_EXT))
 
+# create $(BIN_DIR) if it does not exist
+ifeq ("$(wildcard $(BIN_DIR))","")
+$(shell $(MKDIR) $(BIN_DIR))
+endif
+
 #-----------------------------------------------------------------------------
 # rules
 #
@@ -241,8 +188,7 @@ CPP_DEPS_EXT := $(patsubst %.o,%.d, $(CPP_OBJS_EXT))
 all: $(TARGET_EXE)
 
 $(TARGET_EXE) : $(C_OBJS_EXT) $(CPP_OBJS_EXT)
-	$(CPP) $(CPPFLAGS) $(QPCPP)/include/qstamp.cpp -o $(BIN_DIR)/qstamp.o
-	$(LINK) $(LINKFLAGS) $(LIB_DIRS) -o $@ $^ $(BIN_DIR)/qstamp.o $(LIBS)
+	$(LINK) $(LINKFLAGS) $(LIB_DIRS) -o $@ $^ $(LIBS)
 
 $(BIN_DIR)/%.d : %.c
 	$(CC) -MM -MT $(@:.d=.o) $(CFLAGS) $< > $@

@@ -21,11 +21,11 @@
 // <www.state-machine.com/licensing>
 // <info@state-machine.com>
 //============================================================================
-//! @date Last updated on: 2022-08-29
-//! @version Last updated for: @ref qpcpp_7_1_0
+//! @date Last updated on: 2023-04-20
+//! @version Last updated for: @ref qpcpp_7_2_2
 //!
 //! @file
-//! @brief QF/C++ port to POSIX API (single-threaded, like QV kernel)
+//! @brief QF/C++ port to POSIX (single-threaded, like QV kernel)
 //!
 
 // expose features from the 2008 POSIX standard (IEEE Standard 1003.1-2008)
@@ -44,8 +44,8 @@
 
 #include <limits.h>         // for PTHREAD_STACK_MIN
 #include <sys/mman.h>       // for mlockall()
-#include <sys/select.h>
 #include <sys/ioctl.h>
+#include <time.h>           // for clock_nanosleep()
 #include <string.h>         // for memcpy() and memset()
 #include <stdlib.h>
 #include <stdio.h>
@@ -62,14 +62,40 @@ static bool l_isRunning;      // flag indicating when QF is running
 static struct termios l_tsav; // structure with saved terminal attributes
 static struct timespec l_tick;
 static int_t l_tickPrio;
-enum { NANOSLEEP_NSEC_PER_SEC = 1000000000 }; // see NOTE05
+
+constexpr long NSEC_PER_SEC {1000000000L};
+constexpr long DEFAULT_TICKS_PER_SEC {100L};
 
 //............................................................................
 static void *ticker_thread(void *); // prototype
 static void *ticker_thread(void *) { // for pthread_create()
-    while (l_isRunning) { // the clock tick loop...
-        nanosleep(&l_tick, NULL); // sleep for the number of ticks, NOTE05
-        QP::QF::onClockTick(); // clock tick callback (must call TICK_X())
+
+    // system clock tick must be configured
+    Q_REQUIRE_ID(100, l_tick.tv_nsec != 0);
+
+    // get the absolute monotonic time for no-drift sleeping
+    static struct timespec next_tick;
+    clock_gettime(CLOCK_MONOTONIC, &next_tick);
+
+    // round down nanoseconds to the nearest configured period
+    next_tick.tv_nsec = (next_tick.tv_nsec / l_tick.tv_nsec) * l_tick.tv_nsec;
+
+    while (l_isRunning) { // the clock tick loop..
+
+        // advance to the next tick (absolute time)
+        next_tick.tv_nsec += l_tick.tv_nsec;
+        if (next_tick.tv_nsec >= NSEC_PER_SEC) {
+            next_tick.tv_nsec -= NSEC_PER_SEC;
+            next_tick.tv_sec  += 1;
+        }
+
+        // sleep without drifting till next_tick (absolute), see NOTE03
+        if (clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME,
+                            &next_tick, NULL) == 0) // success?
+        {
+            // clock tick callback (must call QTIMEEVT_TICK_X())
+            QP::QF::onClockTick();
+        }
     }
     return nullptr; // return success
 }
@@ -99,7 +125,7 @@ void QF::init(void) {
     pthread_cond_init(&QV_condVar_, NULL);
 
     l_tick.tv_sec = 0;
-    l_tick.tv_nsec = NANOSLEEP_NSEC_PER_SEC/100L; // default clock tick
+    l_tick.tv_nsec = NSEC_PER_SEC/100L; // default clock tick
     l_tickPrio = sched_get_priority_min(SCHED_FIFO); // default tick prio
 
     // install the SIGINT (Ctrl-C) signal handler
@@ -230,7 +256,7 @@ void QF::stop(void) {
 //............................................................................
 void QF::setTickRate(std::uint32_t ticksPerSec, int_t tickPrio) {
     if (ticksPerSec != 0U) {
-        l_tick.tv_nsec = NANOSLEEP_NSEC_PER_SEC / ticksPerSec;
+        l_tick.tv_nsec = NSEC_PER_SEC / ticksPerSec;
     }
     else {
         l_tick.tv_nsec = 0; // means NO system clock tick
@@ -309,24 +335,17 @@ void QActive::stop(void) {
 //============================================================================
 // NOTE01:
 // In Linux, the scheduler policy closest to real-time is the SCHED_FIFO
-// policy, available only with superuser privileges. QF::run() attempts
-// to set this policy as well as to maximize its priority, so that the
-// ticking occurrs in the most timely manner (as close to an interrupt as
-// possible). However, setting the SCHED_FIFO policy might fail, most
-// probably due to insufficient privileges.
-//
-// NOTE02:
-// On some Linux systems nanosleep() might actually not deliver the finest
-// time granularity. For example, on some Linux implementations, nanosleep()
-// could not block for shorter intervals than 20ms, while the underlying
-// clock tick period was only 10ms. Sometimes, the select() system call can
-// provide a finer granularity.
+// policy, available only with superuser privileges. QF::run() attempts to set
+// this policy as well as to maximize its priority, so that the ticking
+// occurs in the most timely manner (as close to an interrupt as possible).
+// However, setting the SCHED_FIFO policy might fail, most probably due to
+// insufficient privileges.
 //
 // NOTE03:
-// Any blocking system call, such as nanosleep() or select() system call can
-// be interrupted by a signal, such as ^C from the keyboard. In this case
-// this QF port breaks out of the event-loop and returns to main() that
-// exits and terminates all spawned p-threads.
+// Any blocking system call, such as clock_nanosleep() system call can
+// be interrupted by a signal, such as ^C from the keyboard. In this case this
+// QF port breaks out of the event-loop and returns to main() that exits and
+// terminates all spawned p-threads.
 //
 // NOTE04:
 // According to the man pages (for pthread_attr_setschedpolicy) the only value
@@ -342,10 +361,5 @@ void QActive::stop(void) {
 // Assuming that a QF application will be real-time, this port reserves the
 // three highest p-thread priorities for the ISR-like threads (e.g., I/O),
 // and the rest highest-priorities for the active objects.
-//
-// NOTE05:
-// In some (older) Linux kernels, the POSIX nanosleep() system call might
-// deliver only 2*actual-system-tick granularity. To compensate for this,
-// you would need to reduce the constant NANOSLEEP_NSEC_PER_SEC by factor 2.
 //
 

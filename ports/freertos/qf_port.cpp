@@ -22,8 +22,8 @@
 // <www.state-machine.com>
 // <info@state-machine.com>
 //============================================================================
-//! @date Last updated on: 2022-11-22
-//! @version Last updated for: @ref qpcpp_7_1_3
+//! @date Last updated on: 2023-05-19
+//! @version Last updated for: @ref qpcpp_7_2_2
 //!
 //! @file
 //! @brief QF/C++ port to FreeRTOS (v10.x) kernel, all supported compilers
@@ -236,7 +236,7 @@ bool QActive::post_(QEvt const * const e, std::uint_fast16_t const margin,
 
         // posting to the FreeRTOS queue must succeed
         Q_ALLEGE_ID(520,
-            xQueueSend(m_eQueue, static_cast<void const *>(&e), portMAX_DELAY)
+            xQueueSend(m_eQueue, static_cast<void const *>(&e), 0)
             == pdPASS);
     }
     else {
@@ -279,8 +279,8 @@ void QActive::postLIFO(QEvt const * const e) noexcept {
 
     // LIFO posting to the FreeRTOS queue must succeed
     Q_ALLEGE_ID(610,
-        xQueueSendToBack(m_eQueue, static_cast<void const *>(&e),
-                         portMAX_DELAY) == pdPASS);
+        xQueueSendToBack(m_eQueue, static_cast<void const *>(&e), 0)
+                         == pdPASS);
 }
 //............................................................................
 QEvt const *QActive::get_(void) noexcept {

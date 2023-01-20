@@ -22,14 +22,19 @@
 // <www.state-machine.com>
 // <info@state-machine.com>
 //============================================================================
-//! @date Last updated on: 2022-06-07
-//! @version Last updated for: @ref qpcpp_7_0_1
+//! @date Last updated on: 2023-04-06
+//! @version Last updated for: @ref qpcpp_7_2_2
 //!
 //! @file
 //! @brief QEP/C++ port, generic C++11 compiler
 
 #ifndef QEP_PORT_HPP
 #define QEP_PORT_HPP
+
+#ifdef __GNUC__
+    //! no-return function specifier (GCC-ARM compiler)
+    #define Q_NORETURN   __attribute__ ((noreturn)) void
+#endif
 
 #include <cstdint>  // Exact-width types. C++11 Standard
 

@@ -1,6 +1,10 @@
 ![QP Framework](doxygen/images/qp_banner.jpg)
 
 # What's New?
+
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/QuantumLeaps/qpcpp)](https://github.com/QuantumLeaps/qpcpp/releases/latest)
+
+
 View QP/C++ Revision History at: https://www.state-machine.com/qpcpp/history.html
 
 > **NOTE:** If you're interested in the latest QP/C++ version from GitHub,

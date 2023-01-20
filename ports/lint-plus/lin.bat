@@ -1,6 +1,6 @@
 @echo off
 :: ===========================================================================
-:: Batch script for linting QP/C++ with PC-Lint-Plus
+:: Batch script for linting QP/C with PC-Lint-Plus2
 :: Copyright (C) 2005 Quantum Leaps, LLC. All rights reserved.
 ::
 :: SPDX-License-Identifier: GPL-3.0-or-later OR LicenseRef-QL-commercial
@@ -33,7 +33,7 @@
 @echo.
 
 :: NOTE: adjust to for your installation directory of PC-Lint-Plus
-@set PCLP=C:\tools\lint-plus\windows\pclp32.exe
+@set PCLP=C:\tools\lint-plus2\windows\pclp64.exe
 
 if NOT exist "%PCLP%" (
     @echo The PC-Lint-Plus toolset not found. Please adjust lin.bat
@@ -44,10 +44,10 @@ if NOT exist "%PCLP%" (
 set QPCPP=..\..
 
 if "%1"=="16bit" (
-    set LINTFLAGS=std.lnt -i16bit options.lnt %2 %3 %4
+    set LINTFLAGS=-i16bit options.lnt %2 %3 %4
     @echo 16bit CPU
 ) else (
-    set LINTFLAGS=std.lnt -i32bit options.lnt %1 %2 %3 %4
+    set LINTFLAGS=-i32bit options.lnt %1 %2 %3 %4
     @echo 32bit CPU default
 )
 
@@ -55,15 +55,15 @@ if "%1"=="16bit" (
 @del *.log
 
 :: linting -------------------------------------------------------------------
-%PCLP% -os(lint_qf.log)  %LINTFLAGS% -iqv  ..\..\src\qf\*.cpp
+%PCLP% -os(lint_qf.log) std.lnt %LINTFLAGS% -iqv  ..\..\src\qf\*.cpp
 
-%PCLP% -os(lint_qv.log)  %LINTFLAGS% -iqv  ..\..\src\qv\*.cpp
+%PCLP% -os(lint_qv.log) std.lnt %LINTFLAGS% -iqv  ..\..\src\qv\*.cpp
 
-%PCLP% -os(lint_qk.log)  %LINTFLAGS% -iqk  ..\..\src\qk\*.cpp
+%PCLP% -os(lint_qk.log) std.lnt %LINTFLAGS% -iqk  ..\..\src\qk\*.cpp
 
-%PCLP% -os(lint_qxk.log) %LINTFLAGS% -iqxk ..\..\src\qxk\*.cpp
+%PCLP% -os(lint_qxk.log) std.lnt %LINTFLAGS% -iqxk ..\..\src\qxk\*.cpp
 
-%PCLP% -os(lint_qs.log)  %LINTFLAGS% -iqv  ..\..\src\qs\*.cpp
+%PCLP% -os(lint_qs.log) std.lnt %LINTFLAGS% -iqv  ..\..\src\qs\*.cpp
 
 :end
 @endlocal
