@@ -131,7 +131,7 @@ private:
     void * m_end;
 
     //! head of linked list of free blocks
-    void * volatile m_free_head;
+    void * m_free_head;
 
     //! maximum block size (in bytes)
     QMPoolSize m_blockSize;
@@ -140,7 +140,7 @@ private:
     QMPoolCtr m_nTot;
 
     //! number of free blocks remaining
-    QMPoolCtr volatile m_nFree;
+    QMPoolCtr m_nFree;
 
     //! minimum number of free blocks ever present in this pool
     //!

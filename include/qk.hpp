@@ -131,11 +131,11 @@ extern "C" {
 //${QK-extern-C::QK_Attr} ....................................................
 //! attributes of the QK kernel (extern "C" for easy access in assembly)
 struct QK_Attr {
-    std::uint8_t volatile actPrio;    //!< prio of the active AO
-    std::uint8_t volatile nextPrio;   //!< prio of the next AO to execute
-    std::uint8_t volatile actThre;    //!< active preemption-threshold
-    std::uint8_t volatile lockCeil;   //!< lock preemption-ceiling (0==no-lock)
-    std::uint8_t volatile lockHolder; //!< prio of the lock holder
+    std::uint8_t actPrio;    //!< prio of the active AO
+    std::uint8_t nextPrio;   //!< prio of the next AO to execute
+    std::uint8_t actThre;    //!< active preemption-threshold
+    std::uint8_t lockCeil;   //!< lock preemption-ceiling (0==no-lock)
+    std::uint8_t lockHolder; //!< prio of the lock holder
 };
 
 //${QK-extern-C::QK_attr_} ...................................................

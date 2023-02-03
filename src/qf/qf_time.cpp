@@ -110,7 +110,7 @@ void QTimeEvt::armX(
     QTimeEvtCtr const interval) noexcept
 {
     std::uint8_t const tickRate = refCtr_ & TE_TICK_RATE;
-    QTimeEvtCtr const ctr = m_ctr;  // temporary to hold volatile
+    QTimeEvtCtr const ctr = m_ctr;
 
     //! @pre the host AO must be valid, time evnet must be disarmed,
     //! number of clock ticks cannot be zero, and the signal must be valid.
@@ -331,7 +331,7 @@ void QTimeEvt::tick_(
 
             // is time evt about to expire?
             if (t->m_ctr == 0U) {
-                QActive * const act = t->toActive(); // temp for volatile
+                QActive * const act = t->toActive();
 
                 // periodic time evt?
                 if (t->m_interval != 0U) {

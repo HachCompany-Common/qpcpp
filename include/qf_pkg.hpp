@@ -93,7 +93,7 @@ namespace QP {
 //! Structure representing a free block in the Native QF Memory Pool
 //! @sa QP::QMPool
 struct QFreeBlock {
-    QFreeBlock * volatile m_next; //!< link to the next free block
+    QFreeBlock *m_next; //!< link to the next free block
 };
 
 //............................................................................

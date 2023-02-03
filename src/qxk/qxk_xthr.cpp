@@ -181,7 +181,6 @@ QEvt const * QXThread::queueGet(std::uint_fast16_t const nTicks) noexcept {
     QEvt const *e;
     if (thr->m_eQueue.m_frontEvt != nullptr) {
         e = thr->m_eQueue.m_frontEvt; // remove from the front
-        // volatile into tmp
         QEQueueCtr const nFree = thr->m_eQueue.m_nFree + 1U;
         thr->m_eQueue.m_nFree = nFree; // update the number of free
 
@@ -335,7 +334,7 @@ bool QXThread::post_(
         Q_REQUIRE_ID(300, e != nullptr);
 
         QF_CRIT_E_();
-        QEQueueCtr nFree = m_eQueue.m_nFree; // get volatile into temporary
+        QEQueueCtr nFree = m_eQueue.m_nFree; // get into temporary
 
         // test-probe#1 for faking queue overflow
         QS_TEST_PROBE_ID(1,
@@ -366,7 +365,7 @@ bool QXThread::post_(
         if (status) { // can post the event?
 
             --nFree;  // one free entry just used up
-            m_eQueue.m_nFree = nFree; // update the volatile
+            m_eQueue.m_nFree = nFree; // update the original
             if (m_eQueue.m_nMin > nFree) {
                 m_eQueue.m_nMin = nFree; // update minimum so far
             }

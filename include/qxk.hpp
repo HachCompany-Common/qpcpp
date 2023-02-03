@@ -432,7 +432,7 @@ private:
     QPSet m_waitSet;
 
     //! semaphore up-down counter
-    std::uint16_t volatile m_count;
+    std::uint16_t m_count;
 
     //! maximum value of the semaphore counter
     std::uint16_t m_max_count;
@@ -678,12 +678,12 @@ extern "C" {
 //${QXK-extern-C::QXK_Attr} ..................................................
 //! attributes of the QXK kernel (extern "C" for easy access in assembly)
 struct QXK_Attr {
-    QP::QActive * volatile curr;      //!< currently executing thread
-    QP::QActive * volatile next;      //!< next thread to execute
-    QP::QActive * volatile prev;      //!< previous thread
-    std::uint8_t volatile actPrio;    //!< QF-prio of the active AO
-    std::uint8_t volatile lockCeil;   //!< lock preemption-ceiling (0==no-lock)
-    std::uint8_t volatile lockHolder; //!< prio of the lock holder
+    QP::QActive *curr;       //!< currently executing thread
+    QP::QActive *next;       //!< next thread to execute
+    QP::QActive *prev;       //!< previous thread
+    std::uint8_t actPrio;    //!< QF-prio of the active AO
+    std::uint8_t lockCeil;   //!< lock preemption-ceiling (0==no-lock)
+    std::uint8_t lockHolder; //!< prio of the lock holder
 };
 
 //${QXK-extern-C::QXK_attr_} .................................................

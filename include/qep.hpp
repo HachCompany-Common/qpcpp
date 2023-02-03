@@ -52,7 +52,7 @@
 // major version number, Y is a 1-digit minor version number, and Z is
 // a 1-digit release number.
 //
-#define QP_VERSION 721U
+#define QP_VERSION 722U
 
 //! The current QP version as a zero terminated string literal.
 //
@@ -61,10 +61,10 @@
 // major version number, Y is a 1-digit minor version number, and Z is
 // a 1-digit release number.
 //
-#define QP_VERSION_STR "7.2.1"
+#define QP_VERSION_STR "7.2.2"
 
-//! Encrypted  current QP release (7.2.1) and date (2023-01-15)
-#define QP_RELEASE 0x76D739FEU
+//! Encrypted  current QP release (7.2.2) and date (2023-03-01)
+#define QP_RELEASE 0x76BAD85DU
 
 //============================================================================
 // Global namespace...
@@ -173,7 +173,7 @@ public:
 
     //! reference counter (only used for dynamic, mutable events)
     //! @tr{RQP003}
-    std::uint8_t volatile refCtr_;
+    std::uint8_t refCtr_;
 
 public:
 

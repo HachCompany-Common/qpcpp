@@ -74,7 +74,7 @@ namespace QP {
 namespace QF {
 
 //${QF::QF-base::intLock_} ...................................................
-std::uint_fast8_t volatile intLock_;
+std::uint_fast8_t intLock_;
 
 } // namespace QF
 } // namespace QP
@@ -84,7 +84,7 @@ namespace QP {
 namespace QF {
 
 //${QF::QF-base::intNest_} ...................................................
-std::uint_fast8_t volatile intNest_;
+std::uint_fast8_t intNest_;
 
 } // namespace QF
 } // namespace QP

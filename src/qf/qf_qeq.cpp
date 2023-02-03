@@ -105,7 +105,7 @@ bool QEQueue::post(
 
     QF_CRIT_STAT_
     QF_CRIT_E_();
-    QEQueueCtr nFree = m_nFree; // temporary to avoid UB for volatile access
+    QEQueueCtr nFree = m_nFree;
 
     // margin available?
     bool status;
@@ -118,7 +118,7 @@ bool QEQueue::post(
         }
 
         --nFree; // one free entry just used up
-        m_nFree = nFree; // update the volatile
+        m_nFree = nFree; // update the original
         if (m_nMin > nFree) {
             m_nMin = nFree; // update minimum so far
         }
@@ -181,7 +181,7 @@ void QEQueue::postLIFO(
 
     QF_CRIT_STAT_
     QF_CRIT_E_();
-    QEQueueCtr nFree = m_nFree; // temporary to avoid UB for volatile access
+    QEQueueCtr nFree = m_nFree;
 
     //! @pre the queue must be able to accept the event (cannot overflow)
     Q_REQUIRE_CRIT_(300, nFree != 0U);
@@ -192,7 +192,7 @@ void QEQueue::postLIFO(
     }
 
     --nFree; // one free entry just used up
-    m_nFree = nFree; // update the volatile
+    m_nFree = nFree; // update the original
     if (m_nMin > nFree) {
         m_nMin = nFree; // update minimum so far
     }
@@ -206,7 +206,7 @@ void QEQueue::postLIFO(
         QS_EQC_PRE_(m_nMin);                 // min number of free entries
     QS_END_NOCRIT_PRE_()
 
-    QEvt const * const frontEvt = m_frontEvt; // read volatile into temporary
+    QEvt const * const frontEvt = m_frontEvt; // read into temporary
     m_frontEvt = e; // deliver event directly to the front of the queue
 
     // was the queue not empty?

@@ -284,7 +284,6 @@ void QTimeEvt::tick1_(
         // the time event must be armed
         Q_ASSERT_ID(810, t->m_ctr != 0U);
 
-        // temp. for volatile
         QActive * const act = static_cast<QActive *>(t->m_act);
 
         // the recipient AO must be provided

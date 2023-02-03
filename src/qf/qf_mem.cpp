@@ -153,7 +153,6 @@ void * QMPool::get(
         // the pool has some free blocks, so a free block must be available
         Q_ASSERT_CRIT_(310, fb != nullptr);
 
-        // put volatile to a temporary to avoid UB
         void * const fb_next = fb->m_next;
 
         // is the pool becoming empty?

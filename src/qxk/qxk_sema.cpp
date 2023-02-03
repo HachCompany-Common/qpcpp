@@ -90,7 +90,6 @@ bool QXSemaphore::wait(std::uint_fast16_t const nTicks) noexcept {
     QF_CRIT_STAT_
     QF_CRIT_E_();
 
-    // volatile into temp.
     QXThread * const curr = QXK_PTR_CAST_(QXThread*, QXK_attr_.curr);
 
     //! @pre this function must:
@@ -175,7 +174,6 @@ bool QXSemaphore::tryWait() noexcept {
     Q_REQUIRE_ID(300, m_max_count > 0U);
 
     #ifdef Q_SPY
-    // volatile into temp.
     QActive const * const curr = QXK_PTR_CAST_(QActive*, QXK_attr_.curr);
     #endif // Q_SPY
 
@@ -219,10 +217,9 @@ bool QXSemaphore::signal() noexcept {
 
         m_count = m_count + 1U; // semaphore signaled: increment
 
-        #ifdef Q_SPY
-        // volatile into temp.
+    #ifdef Q_SPY
         QActive const * const curr = QXK_PTR_CAST_(QActive*, QXK_attr_.curr);
-        #endif // Q_SPY
+    #endif // Q_SPY
 
         QS_BEGIN_NOCRIT_PRE_(QS_SEM_SIGNAL, curr->m_prio)
             QS_TIME_PRE_();  // timestamp

@@ -360,22 +360,22 @@ public:
     QSCtr end;
 
     //! offset to where next byte will be inserted
-    QSCtr volatile head;
+    QSCtr head;
 
     //! offset of where next record will be extracted
-    QSCtr volatile tail;
+    QSCtr tail;
 
     //! number of bytes currently in the ring buffer
-    QSCtr volatile used;
+    QSCtr used;
 
     //! sequence number of the last inserted QS record
-    std::uint8_t volatile seq;
+    std::uint8_t seq;
 
     //! checksum of the currently inserted record
-    std::uint8_t volatile chksum;
+    std::uint8_t chksum;
 
     //! critical section nesting level
-    std::uint8_t volatile critNest;
+    std::uint8_t critNest;
 
     //! flags for internal use
     std::uint8_t flags;
@@ -765,10 +765,10 @@ public:
     QSCtr  end;
 
     //! offset to where next byte will be inserted
-    QSCtr volatile head;
+    QSCtr head;
 
     //! offset of where next byte will be extracted
-    QSCtr volatile tail;
+    QSCtr tail;
 
 #ifdef Q_UTEST
     //! QUTest event loop is running

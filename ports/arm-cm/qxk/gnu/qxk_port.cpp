@@ -23,7 +23,7 @@
 * <info@state-machine.com>
 ============================================================================*/
 /*!
-* @date Last updated on: 2023-01-25
+* @date Last updated on: 2023-02-03
 * @version Last updated for: @ref qpc_7_2_2
 *
 * @file
@@ -51,6 +51,7 @@ void NMI_Handler(void);
 #define SCB_SYSPRI   ((uint32_t volatile *)0xE000ED18U)
 #define NVIC_EN      ((uint32_t volatile *)0xE000E100U)
 #define NVIC_IP      ((uint8_t  volatile *)0xE000E400U)
+#define SCB_CPACR   *((uint32_t volatile *)0xE000ED88U)
 #define FPU_FPCCR   *((uint32_t volatile *)0xE000EF34U)
 #define NVIC_PEND    0xE000E200
 #define SCB_ICSR     0xE000ED04
@@ -108,9 +109,11 @@ void QXK_init(void) {
 #endif                  /*--------- QXK IRQ specified */
 
 #if (__ARM_FP != 0)     /*--------- if VFP available... */
-    /* configure the FPU for QK */
-    FPU_FPCCR |= (1U << 30U)    /* automatic FPU state preservation (ASPEN) */
-                 | (1U << 31U); /* lazy stacking (LSPEN) */
+    /* make sure that the FPU is enabled by seting CP10 & CP11 Full Access */
+    SCB_CPACR = (SCB_CPACR | ((3UL << 20U) | (3UL << 22U)));
+
+    /* FPU automatic state preservation (ASPEN) lazy stacking (LSPEN) */
+    FPU_FPCCR = (FPU_FPCCR | (1U << 30U) | (1U << 31U));
 #endif                  /*--------- VFP available */
 }
 

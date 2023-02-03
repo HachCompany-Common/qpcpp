@@ -339,7 +339,7 @@ Contact information:
 //! @tr{RQP003}</documentation>
    </attribute>
    <!--${QEP::QEvt::refCtr_}-->
-   <attribute name="refCtr_" type="std::uint8_t volatile" visibility="0x00" properties="0x00">
+   <attribute name="refCtr_" type="std::uint8_t" visibility="0x00" properties="0x00">
     <documentation>//! reference counter (only used for dynamic, mutable events)
 //! @tr{RQP003}</documentation>
    </attribute>
@@ -2388,11 +2388,11 @@ return r;</code>
 //! capable of storing up to #QF_MAX_ACTIVE priority levels, which can be
 //! configured in the rage 1..64, inclusive.</documentation>
    <!--${QF-types::QPSet::m_bits}-->
-   <attribute name="m_bits? (QF_MAX_ACTIVE &lt;= 32)" type="QPSetBits volatile" visibility="0x00" properties="0x00">
+   <attribute name="m_bits? (QF_MAX_ACTIVE &lt;= 32)" type="QPSetBits" visibility="0x00" properties="0x00">
     <documentation>//! bitmask with a bit for each element</documentation>
    </attribute>
    <!--${QF-types::QPSet::m_bits[2]}-->
-   <attribute name="m_bits[2]? (32 &lt; QF_MAX_ACTIVE)" type="QPSetBits volatile" visibility="0x00" properties="0x00">
+   <attribute name="m_bits[2]? (32 &lt; QF_MAX_ACTIVE)" type="QPSetBits" visibility="0x00" properties="0x00">
     <documentation>//! bitmasks with a bit for each element</documentation>
    </attribute>
    <!--${QF-types::QPSet::setEmpty}-->
@@ -2770,7 +2770,7 @@ Q_REQUIRE_ID(100, e != nullptr);
 
 QF_CRIT_STAT_
 QF_CRIT_E_();
-QEQueueCtr nFree = m_eQueue.m_nFree; // get volatile into the temporary
+QEQueueCtr nFree = m_eQueue.m_nFree; // get into the temporary
 
 // test-probe#1 for faking queue overflow
 QS_TEST_PROBE_DEF(&amp;QActive::post_)
@@ -2803,7 +2803,7 @@ if (e-&gt;poolId_ != 0U) {
 if (status) { // can post the event?
 
     --nFree;  // one free entry just used up
-    m_eQueue.m_nFree = nFree; // update the volatile
+    m_eQueue.m_nFree = nFree; // update the original
     if (m_eQueue.m_nMin &gt; nFree) {
         m_eQueue.m_nMin = nFree; // update minimum so far
     }
@@ -2904,7 +2904,7 @@ return status;</code>
     <parameter name="e" type="QEvt const * const"/>
     <code>QF_CRIT_STAT_
 QF_CRIT_E_();
-QEQueueCtr nFree = m_eQueue.m_nFree;// tmp to avoid UB for volatile access
+QEQueueCtr nFree = m_eQueue.m_nFree;
 
 QS_TEST_PROBE_DEF(&amp;QActive::postLIFO)
 QS_TEST_PROBE_ID(1,
@@ -2920,7 +2920,7 @@ if (e-&gt;poolId_ != 0U) {
 }
 
 --nFree;  // one free entry just used up
-m_eQueue.m_nFree = nFree; // update the volatile
+m_eQueue.m_nFree = nFree; // update the original
 if (m_eQueue.m_nMin &gt; nFree) {
     m_eQueue.m_nMin = nFree; // update minimum so far
 }
@@ -2944,7 +2944,6 @@ if (QS_LOC_CHECK_(m_prio)) {
 }
 #endif
 
-// read volatile into temporary
 QEvt const * const frontEvt = m_eQueue.m_frontEvt;
 m_eQueue.m_frontEvt = e; // deliver the event directly to the front
 
@@ -3750,7 +3749,7 @@ QF_QMACTIVE_TO_QMSM_CAST_(this)-&gt;QMsm::init(qs_id);</code>
 //! illegal to allocate QP::QTimeEvt instances with the Q_NEW() or Q_NEW_X()
 //! macros.</documentation>
    <!--${QF::QTimeEvt::m_next}-->
-   <attribute name="m_next" type="QTimeEvt * volatile" visibility="0x02" properties="0x00">
+   <attribute name="m_next" type="QTimeEvt *" visibility="0x02" properties="0x00">
     <documentation>//! link to the next time event in the list</documentation>
    </attribute>
    <!--${QF::QTimeEvt::m_act}-->
@@ -3762,7 +3761,7 @@ QF_QMACTIVE_TO_QMSM_CAST_(this)-&gt;QMsm::init(qs_id);</code>
 //! the head of the list of newly armed time events.</documentation>
    </attribute>
    <!--${QF::QTimeEvt::m_ctr}-->
-   <attribute name="m_ctr" type="QTimeEvtCtr volatile" visibility="0x02" properties="0x00">
+   <attribute name="m_ctr" type="QTimeEvtCtr" visibility="0x02" properties="0x00">
     <documentation>//! the internal down-counter of the time event
 //!
 //! @details
@@ -3861,7 +3860,7 @@ refCtr_ = static_cast&lt;std::uint8_t&gt;(tickRate);</code>
     <!--${QF::QTimeEvt::armX::interval = 0U}-->
     <parameter name="interval = 0U" type="QTimeEvtCtr const"/>
     <code>std::uint8_t const tickRate = refCtr_ &amp; TE_TICK_RATE;
-QTimeEvtCtr const ctr = m_ctr;  // temporary to hold volatile
+QTimeEvtCtr const ctr = m_ctr;
 
 //! @pre the host AO must be valid, time evnet must be disarmed,
 //! number of clock ticks cannot be zero, and the signal must be valid.
@@ -4175,7 +4174,7 @@ for (;;) {
 
         // is time evt about to expire?
         if (t-&gt;m_ctr == 0U) {
-            QActive * const act = t-&gt;toActive(); // temp for volatile
+            QActive * const act = t-&gt;toActive();
 
             // periodic time evt?
             if (t-&gt;m_interval != 0U) {
@@ -4389,7 +4388,7 @@ refCtr_ = 0U; // default rate 0
 //! not to invoke those operations from other critical sections when nesting
 //! of critical sections is not supported.</documentation>
    <!--${QF::QEQueue::m_frontEvt}-->
-   <attribute name="m_frontEvt" type="QEvt const * volatile" visibility="0x02" properties="0x00">
+   <attribute name="m_frontEvt" type="QEvt const *" visibility="0x02" properties="0x00">
     <documentation>//! pointer to event at the front of the queue
 //!
 //! @details
@@ -4411,15 +4410,15 @@ refCtr_ = 0U; // default rate 0
     <documentation>//! offset of the end of the ring buffer from the start of the buffer</documentation>
    </attribute>
    <!--${QF::QEQueue::m_head}-->
-   <attribute name="m_head" type="QEQueueCtr volatile" visibility="0x02" properties="0x00">
+   <attribute name="m_head" type="QEQueueCtr" visibility="0x02" properties="0x00">
     <documentation>//! offset to where next event will be inserted into the buffer</documentation>
    </attribute>
    <!--${QF::QEQueue::m_tail}-->
-   <attribute name="m_tail" type="QEQueueCtr volatile" visibility="0x02" properties="0x00">
+   <attribute name="m_tail" type="QEQueueCtr" visibility="0x02" properties="0x00">
     <documentation>//! offset of where next event will be extracted from the buffer</documentation>
    </attribute>
    <!--${QF::QEQueue::m_nFree}-->
-   <attribute name="m_nFree" type="QEQueueCtr volatile" visibility="0x02" properties="0x00">
+   <attribute name="m_nFree" type="QEQueueCtr" visibility="0x02" properties="0x00">
     <documentation>//! number of free events in the ring buffer</documentation>
    </attribute>
    <!--${QF::QEQueue::m_nMin}-->
@@ -4524,7 +4523,7 @@ Q_REQUIRE_ID(200, e != nullptr);
 
 QF_CRIT_STAT_
 QF_CRIT_E_();
-QEQueueCtr nFree = m_nFree; // temporary to avoid UB for volatile access
+QEQueueCtr nFree = m_nFree;
 
 // margin available?
 bool status;
@@ -4537,7 +4536,7 @@ if (((margin == QF::NO_MARGIN) &amp;&amp; (nFree &gt; 0U))
     }
 
     --nFree; // one free entry just used up
-    m_nFree = nFree; // update the volatile
+    m_nFree = nFree; // update the original
     if (m_nMin &gt; nFree) {
         m_nMin = nFree; // update minimum so far
     }
@@ -4623,7 +4622,7 @@ return status;</code>
 
 QF_CRIT_STAT_
 QF_CRIT_E_();
-QEQueueCtr nFree = m_nFree; // temporary to avoid UB for volatile access
+QEQueueCtr nFree = m_nFree;
 
 //! @pre the queue must be able to accept the event (cannot overflow)
 Q_REQUIRE_CRIT_(300, nFree != 0U);
@@ -4634,7 +4633,7 @@ if (e-&gt;poolId_ != 0U) {
 }
 
 --nFree; // one free entry just used up
-m_nFree = nFree; // update the volatile
+m_nFree = nFree; // update the original
 if (m_nMin &gt; nFree) {
     m_nMin = nFree; // update minimum so far
 }
@@ -4648,7 +4647,7 @@ QS_BEGIN_NOCRIT_PRE_(QS_QF_EQUEUE_POST_LIFO, qs_id)
     QS_EQC_PRE_(m_nMin);                 // min number of free entries
 QS_END_NOCRIT_PRE_()
 
-QEvt const * const frontEvt = m_frontEvt; // read volatile into temporary
+QEvt const * const frontEvt = m_frontEvt; // read into temporary
 m_frontEvt = e; // deliver event directly to the front of the queue
 
 // was the queue not empty?
@@ -4823,7 +4822,7 @@ return e;</code>
     <documentation>//! end of the memory managed by this memory pool</documentation>
    </attribute>
    <!--${QF::QMPool::m_free_head}-->
-   <attribute name="m_free_head" type="void * volatile" visibility="0x02" properties="0x00">
+   <attribute name="m_free_head" type="void *" visibility="0x02" properties="0x00">
     <documentation>//! head of linked list of free blocks</documentation>
    </attribute>
    <!--${QF::QMPool::m_blockSize}-->
@@ -4835,7 +4834,7 @@ return e;</code>
     <documentation>//! total number of blocks</documentation>
    </attribute>
    <!--${QF::QMPool::m_nFree}-->
-   <attribute name="m_nFree" type="QMPoolCtr volatile" visibility="0x02" properties="0x00">
+   <attribute name="m_nFree" type="QMPoolCtr" visibility="0x02" properties="0x00">
     <documentation>//! number of free blocks remaining</documentation>
    </attribute>
    <!--${QF::QMPool::m_nMin}-->
@@ -4998,7 +4997,6 @@ if (m_nFree &gt; static_cast&lt;QMPoolCtr&gt;(margin)) {
     // the pool has some free blocks, so a free block must be available
     Q_ASSERT_CRIT_(310, fb != nullptr);
 
-    // put volatile to a temporary to avoid UB
     void * const fb_next = fb-&gt;m_next;
 
     // is the pool becoming empty?
@@ -5281,11 +5279,11 @@ return true; // the event is always posted correctly</code>
   <!--${QF::QF-base}-->
   <package name="QF-base" stereotype="0x02" namespace="QF::">
    <!--${QF::QF-base::intLock_}-->
-   <attribute name="intLock_" type="std::uint_fast8_t volatile" visibility="0x00" properties="0x00">
+   <attribute name="intLock_" type="std::uint_fast8_t" visibility="0x00" properties="0x00">
     <documentation>//! Interrupt lock up-down counter (used in some QF ports)</documentation>
    </attribute>
    <!--${QF::QF-base::intNest_}-->
-   <attribute name="intNest_" type="std::uint_fast8_t volatile" visibility="0x00" properties="0x00">
+   <attribute name="intNest_" type="std::uint_fast8_t" visibility="0x00" properties="0x00">
     <documentation>//! Interrupt nesting up-down counter (used in some QF ports)</documentation>
    </attribute>
    <!--${QF::QF-base::init}-->
@@ -6811,27 +6809,27 @@ if (QS_GLB_CHECK_(rec_) &amp;&amp; QS_LOC_CHECK_(qs_id_)) { \
      <documentation>//! offset of the end of the ring buffer</documentation>
     </attribute>
     <!--${QS::QS-tx::QStx::head}-->
-    <attribute name="head" type="QSCtr volatile" visibility="0x00" properties="0x00">
+    <attribute name="head" type="QSCtr" visibility="0x00" properties="0x00">
      <documentation>//! offset to where next byte will be inserted</documentation>
     </attribute>
     <!--${QS::QS-tx::QStx::tail}-->
-    <attribute name="tail" type="QSCtr volatile" visibility="0x00" properties="0x00">
+    <attribute name="tail" type="QSCtr" visibility="0x00" properties="0x00">
      <documentation>//! offset of where next record will be extracted</documentation>
     </attribute>
     <!--${QS::QS-tx::QStx::used}-->
-    <attribute name="used" type="QSCtr volatile" visibility="0x00" properties="0x00">
+    <attribute name="used" type="QSCtr" visibility="0x00" properties="0x00">
      <documentation>//! number of bytes currently in the ring buffer</documentation>
     </attribute>
     <!--${QS::QS-tx::QStx::seq}-->
-    <attribute name="seq" type="std::uint8_t volatile" visibility="0x00" properties="0x00">
+    <attribute name="seq" type="std::uint8_t" visibility="0x00" properties="0x00">
      <documentation>//! sequence number of the last inserted QS record</documentation>
     </attribute>
     <!--${QS::QS-tx::QStx::chksum}-->
-    <attribute name="chksum" type="std::uint8_t volatile" visibility="0x00" properties="0x00">
+    <attribute name="chksum" type="std::uint8_t" visibility="0x00" properties="0x00">
      <documentation>//! checksum of the currently inserted record</documentation>
     </attribute>
     <!--${QS::QS-tx::QStx::critNest}-->
-    <attribute name="critNest" type="std::uint8_t volatile" visibility="0x00" properties="0x00">
+    <attribute name="critNest" type="std::uint8_t" visibility="0x00" properties="0x00">
      <documentation>//! critical section nesting level</documentation>
     </attribute>
     <!--${QS::QS-tx::QStx::flags}-->
@@ -8231,11 +8229,11 @@ priv_.chksum = chksum_; // update the checksum</code>
      <documentation>//! offset of the end of the ring buffer</documentation>
     </attribute>
     <!--${QS::QS-rx::QSrx::head}-->
-    <attribute name="head" type="QSCtr volatile" visibility="0x00" properties="0x00">
+    <attribute name="head" type="QSCtr" visibility="0x00" properties="0x00">
      <documentation>//! offset to where next byte will be inserted</documentation>
     </attribute>
     <!--${QS::QS-rx::QSrx::tail}-->
-    <attribute name="tail" type="QSCtr volatile" visibility="0x00" properties="0x00">
+    <attribute name="tail" type="QSCtr" visibility="0x00" properties="0x00">
      <documentation>//! offset of where next byte will be extracted</documentation>
     </attribute>
     <!--${QS::QS-rx::QSrx::inTestLoop}-->
@@ -9118,7 +9116,6 @@ if (t != nullptr) {
     // the time event must be armed
     Q_ASSERT_ID(810, t-&gt;m_ctr != 0U);
 
-    // temp. for volatile
     QActive * const act = static_cast&lt;QActive *&gt;(t-&gt;m_act);
 
     // the recipient AO must be provided
@@ -9947,11 +9944,11 @@ QF_CRIT_X_();</code>
   <attribute name="QK_Attr" type="struct" visibility="0x04" properties="0x00">
    <documentation>//! attributes of the QK kernel (extern &quot;C&quot; for easy access in assembly)</documentation>
    <code>{
-    std::uint8_t volatile actPrio;    //!&lt; prio of the active AO
-    std::uint8_t volatile nextPrio;   //!&lt; prio of the next AO to execute
-    std::uint8_t volatile actThre;    //!&lt; active preemption-threshold
-    std::uint8_t volatile lockCeil;   //!&lt; lock preemption-ceiling (0==no-lock)
-    std::uint8_t volatile lockHolder; //!&lt; prio of the lock holder
+    std::uint8_t actPrio;    //!&lt; prio of the active AO
+    std::uint8_t nextPrio;   //!&lt; prio of the next AO to execute
+    std::uint8_t actThre;    //!&lt; active preemption-threshold
+    std::uint8_t lockCeil;   //!&lt; lock preemption-ceiling (0==no-lock)
+    std::uint8_t lockHolder; //!&lt; prio of the lock holder
 };</code>
   </attribute>
   <!--${QK-extern-C::QK_attr_}-->
@@ -10544,7 +10541,6 @@ if (thr-&gt;m_eQueue.m_frontEvt == nullptr) {
 QEvt const *e;
 if (thr-&gt;m_eQueue.m_frontEvt != nullptr) {
     e = thr-&gt;m_eQueue.m_frontEvt; // remove from the front
-    // volatile into tmp
     QEQueueCtr const nFree = thr-&gt;m_eQueue.m_nFree + 1U;
     thr-&gt;m_eQueue.m_nFree = nFree; // update the number of free
 
@@ -10780,7 +10776,7 @@ else if (m_eQueue.m_end != 0U) {
     Q_REQUIRE_ID(300, e != nullptr);
 
     QF_CRIT_E_();
-    QEQueueCtr nFree = m_eQueue.m_nFree; // get volatile into temporary
+    QEQueueCtr nFree = m_eQueue.m_nFree; // get into temporary
 
     // test-probe#1 for faking queue overflow
     QS_TEST_PROBE_ID(1,
@@ -10811,7 +10807,7 @@ else if (m_eQueue.m_end != 0U) {
     if (status) { // can post the event?
 
         --nFree;  // one free entry just used up
-        m_eQueue.m_nFree = nFree; // update the volatile
+        m_eQueue.m_nFree = nFree; // update the original
         if (m_eQueue.m_nMin &gt; nFree) {
             m_eQueue.m_nMin = nFree; // update minimum so far
         }
@@ -11031,7 +11027,7 @@ return wasArmed;</code>
     <documentation>//! set of extended threads waiting on this semaphore</documentation>
    </attribute>
    <!--${QXK::QXSemaphore::m_count}-->
-   <attribute name="m_count" type="std::uint16_t volatile" visibility="0x02" properties="0x00">
+   <attribute name="m_count" type="std::uint16_t" visibility="0x02" properties="0x00">
     <documentation>//! semaphore up-down counter</documentation>
    </attribute>
    <!--${QXK::QXSemaphore::m_max_count}-->
@@ -11102,7 +11098,6 @@ m_waitSet.setEmpty();</code>
     <code>QF_CRIT_STAT_
 QF_CRIT_E_();
 
-// volatile into temp.
 QXThread * const curr = QXK_PTR_CAST_(QXThread*, QXK_attr_.curr);
 
 //! @pre this function must:
@@ -11199,7 +11194,6 @@ QF_CRIT_E_();
 Q_REQUIRE_ID(300, m_max_count &gt; 0U);
 
 #ifdef Q_SPY
-// volatile into temp.
 QActive const * const curr = QXK_PTR_CAST_(QActive*, QXK_attr_.curr);
 #endif // Q_SPY
 
@@ -11261,10 +11255,9 @@ if (m_count &lt; m_max_count) {
 
     m_count = m_count + 1U; // semaphore signaled: increment
 
-    #ifdef Q_SPY
-    // volatile into temp.
+#ifdef Q_SPY
     QActive const * const curr = QXK_PTR_CAST_(QActive*, QXK_attr_.curr);
-    #endif // Q_SPY
+#endif // Q_SPY
 
     QS_BEGIN_NOCRIT_PRE_(QS_SEM_SIGNAL, curr-&gt;m_prio)
         QS_TIME_PRE_();  // timestamp
@@ -11966,12 +11959,12 @@ QF_CRIT_X_();</code>
   <attribute name="QXK_Attr" type="struct" visibility="0x04" properties="0x00">
    <documentation>//! attributes of the QXK kernel (extern &quot;C&quot; for easy access in assembly)</documentation>
    <code>{
-    QP::QActive * volatile curr;      //!&lt; currently executing thread
-    QP::QActive * volatile next;      //!&lt; next thread to execute
-    QP::QActive * volatile prev;      //!&lt; previous thread
-    std::uint8_t volatile actPrio;    //!&lt; QF-prio of the active AO
-    std::uint8_t volatile lockCeil;   //!&lt; lock preemption-ceiling (0==no-lock)
-    std::uint8_t volatile lockHolder; //!&lt; prio of the lock holder
+    QP::QActive *curr;       //!&lt; currently executing thread
+    QP::QActive *next;       //!&lt; next thread to execute
+    QP::QActive *prev;       //!&lt; previous thread
+    std::uint8_t actPrio;    //!&lt; QF-prio of the active AO
+    std::uint8_t lockCeil;   //!&lt; lock preemption-ceiling (0==no-lock)
+    std::uint8_t lockHolder; //!&lt; prio of the lock holder
 };</code>
   </attribute>
   <!--${QXK-extern-C::QXK_attr_}-->
@@ -12384,7 +12377,7 @@ QF_CRIT_X_();</code>
 // major version number, Y is a 1-digit minor version number, and Z is
 // a 1-digit release number.
 //
-#define QP_VERSION 721U
+#define QP_VERSION 722U
 
 //! The current QP version as a zero terminated string literal.
 //
@@ -12393,10 +12386,10 @@ QF_CRIT_X_();</code>
 // major version number, Y is a 1-digit minor version number, and Z is
 // a 1-digit release number.
 //
-#define QP_VERSION_STR &quot;7.2.1&quot;
+#define QP_VERSION_STR &quot;7.2.2&quot;
 
-//! Encrypted  current QP release (7.2.1) and date (2023-01-15)
-#define QP_RELEASE 0x76D739FEU
+//! Encrypted  current QP release (7.2.2) and date (2023-03-01)
+#define QP_RELEASE 0x76BAD85DU
 
 //============================================================================
 // Global namespace...
@@ -12467,7 +12460,7 @@ namespace QP {
 //! Structure representing a free block in the Native QF Memory Pool
 //! @sa QP::QMPool
 struct QFreeBlock {
-    QFreeBlock * volatile m_next; //!&lt; link to the next free block
+    QFreeBlock *m_next; //!&lt; link to the next free block
 };
 
 //............................................................................

@@ -144,7 +144,7 @@ private:
     //!
     //! The additional role of this attribute is to indicate the empty status
     //! of the queue. The queue is empty if the m_frontEvt location is nullptr.
-    QEvt const * volatile m_frontEvt;
+    QEvt const * m_frontEvt;
 
     //! pointer to the start of the ring buffer
     QEvt const ** m_ring;
@@ -153,13 +153,13 @@ private:
     QEQueueCtr m_end;
 
     //! offset to where next event will be inserted into the buffer
-    QEQueueCtr volatile m_head;
+    QEQueueCtr m_head;
 
     //! offset of where next event will be extracted from the buffer
-    QEQueueCtr volatile m_tail;
+    QEQueueCtr m_tail;
 
     //! number of free events in the ring buffer
-    QEQueueCtr volatile m_nFree;
+    QEQueueCtr m_nFree;
 
     //! minimum number of free events ever in the ring buffer.
     //! @note this attribute remembers the low-watermark of the ring buffer,

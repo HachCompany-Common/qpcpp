@@ -23,8 +23,8 @@
 * <info@state-machine.com>
 ============================================================================*/
 /*!
-* @date Last updated on: 2022-12-18
-* @version Last updated for: @ref qpc_7_2_0
+* @date Last updated on: 2023-02-03
+* @version Last updated for: @ref qpcpp_7_2_2
 *
 * @file
 * @brief QV/C++ port to ARM Cortex-M, GNU-ARM toolset
@@ -36,8 +36,9 @@
 extern "C" {
 
 #define SCnSCB_ICTR  ((uint32_t volatile *)0xE000E004U)
-#define SCB_SYSPRI   ((uint32_t volatile *)0xE000ED14U)
+#define SCB_SYSPRI   ((uint32_t volatile *)0xE000ED18U)
 #define NVIC_IP      ((uint32_t volatile *)0xE000E400U)
+#define SCB_CPACR   *((uint32_t volatile *)0xE000ED88U)
 #define FPU_FPCCR   *((uint32_t volatile *)0xE000EF34U)
 
 /*..........................................................................*/
@@ -62,16 +63,16 @@ void QV_init(void) {
 #if (__ARM_ARCH != 6)   /*--------- if ARMv7-M and higher... */
 
     /* set exception priorities to QF_BASEPRI...
-    * SCB_SYSPRI1: Usage-fault, Bus-fault, Memory-fault
+    * SCB_SYSPRI[0]: Usage-fault, Bus-fault, Memory-fault
     */
-    SCB_SYSPRI[1] = (SCB_SYSPRI[1]
+    SCB_SYSPRI[0] = (SCB_SYSPRI[0]
         | (QF_BASEPRI << 16U) | (QF_BASEPRI << 8U) | QF_BASEPRI);
 
-    /* SCB_SYSPRI2: SVCall */
-    SCB_SYSPRI[2] = (SCB_SYSPRI[2] | (QF_BASEPRI << 24U));
+    /* SCB_SYSPRI[1]: SVCall */
+    SCB_SYSPRI[1] = (SCB_SYSPRI[1] | (QF_BASEPRI << 24U));
 
-    /* SCB_SYSPRI3:  SysTick, PendSV, Debug */
-    SCB_SYSPRI[3] = (SCB_SYSPRI[3]
+    /* SCB_SYSPRI[2]:  SysTick, PendSV, Debug */
+    SCB_SYSPRI[2] = (SCB_SYSPRI[2]
         | (QF_BASEPRI << 24U) | (QF_BASEPRI << 16U) | QF_BASEPRI);
 
     /* set all implemented IRQ priories to QF_BASEPRI... */
@@ -82,13 +83,15 @@ void QV_init(void) {
 
 #endif                  /*--------- ARMv7-M or higher */
 
-    /* SCB_SYSPRI3: PendSV set to priority 0xFF (lowest) */
-    SCB_SYSPRI[3] = (SCB_SYSPRI[3] | (0xFFU << 16U));
+    /* SCB_SYSPRI[2]: PendSV set to priority 0xFF (lowest) */
+    SCB_SYSPRI[2] = (SCB_SYSPRI[2] | (0xFFU << 16U));
 
 #if (__ARM_FP != 0)     /*--------- if VFP available... */
-    /* configure the FPU for QV: automatic FPU state preservation (ASPEN) */
-    FPU_FPCCR = FPU_FPCCR | (1U << 30U)
-                 | (1U << 31U); /* lazy stacking (LSPEN) */
+    /* make sure that the FPU is enabled by seting CP10 & CP11 Full Access */
+    SCB_CPACR = (SCB_CPACR | ((3UL << 20U) | (3UL << 22U)));
+
+    /* FPU automatic state preservation (ASPEN) lazy stacking (LSPEN) */
+    FPU_FPCCR = (FPU_FPCCR | (1U << 30U) | (1U << 31U));
 #endif                  /*--------- VFP available */
 }
 

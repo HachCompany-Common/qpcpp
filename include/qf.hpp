@@ -220,12 +220,12 @@ public:
 
 #if (QF_MAX_ACTIVE <= 32)
     //! bitmask with a bit for each element
-    QPSetBits volatile m_bits;
+    QPSetBits m_bits;
 #endif //  (QF_MAX_ACTIVE <= 32)
 
 #if (32 < QF_MAX_ACTIVE)
     //! bitmasks with a bit for each element
-    QPSetBits volatile m_bits[2];
+    QPSetBits m_bits[2];
 #endif //  (32 < QF_MAX_ACTIVE)
 
 public:
@@ -976,7 +976,7 @@ class QTimeEvt : public QP::QEvt {
 private:
 
     //! link to the next time event in the list
-    QTimeEvt * volatile m_next;
+    QTimeEvt * m_next;
 
     //! the active object that receives the time events
     //!
@@ -991,7 +991,7 @@ private:
     //! The down-counter is decremented by 1 in every TICK_X()
     //! invocation. The time event fires (gets posted or published) when
     //! the down-counter reaches zero.
-    QTimeEvtCtr volatile m_ctr;
+    QTimeEvtCtr m_ctr;
 
     //! the interval for the periodic time event (zero for the one-shot
     //! time event)
@@ -1249,11 +1249,11 @@ namespace QF {
 
 //${QF::QF-base::intLock_} ...................................................
 //! Interrupt lock up-down counter (used in some QF ports)
-extern std::uint_fast8_t volatile intLock_;
+extern std::uint_fast8_t intLock_;
 
 //${QF::QF-base::intNest_} ...................................................
 //! Interrupt nesting up-down counter (used in some QF ports)
-extern std::uint_fast8_t volatile intNest_;
+extern std::uint_fast8_t intNest_;
 
 //${QF::QF-base::init} .......................................................
 //! QF initialization
