@@ -43,10 +43,9 @@ void QK_USE_IRQ_HANDLER(void);
 void NMI_Handler(void);
 #endif
 
-#define SCnSCB_ICTR  ((uint32_t volatile *)0xE000E004U)
 #define SCB_SYSPRI   ((uint32_t volatile *)0xE000ED18U)
 #define NVIC_EN      ((uint32_t volatile *)0xE000E100U)
-#define NVIC_IP      ((uint8_t  volatile *)0xE000E400U)
+#define NVIC_IP      ((uint32_t volatile *)0xE000E400U)
 #define SCB_CPACR   *((uint32_t volatile *)0xE000ED88U)
 #define FPU_FPCCR   *((uint32_t volatile *)0xE000EF34U)
 #define NVIC_PEND    0xE000E200
@@ -76,23 +75,13 @@ void QK_init(void) {
 
 #if (__ARM_ARCH != 6)   /*--------- if ARMv7-M and higher... */
 
-    /* set exception priorities to QF_BASEPRI...
-    * SCB_SYSPRI[0]: Usage-fault, Bus-fault, Memory-fault
-    */
-    SCB_SYSPRI[0] = (SCB_SYSPRI[0]
-        | (QF_BASEPRI << 16U) | (QF_BASEPRI << 8U) | QF_BASEPRI);
+    /* SCB_SYSPRI[2]:  SysTick */
+    SCB_SYSPRI[2] = (SCB_SYSPRI[2] | (QF_BASEPRI << 24U));
 
-    /* SCB_SYSPRI[1]: SVCall */
-    SCB_SYSPRI[1] = (SCB_SYSPRI[1] | (QF_BASEPRI << 24U));
-
-    /* SCB_SYSPRI[2]:  SysTick, PendSV, Debug */
-    SCB_SYSPRI[2] = (SCB_SYSPRI[2]
-        | (QF_BASEPRI << 24U) | (QF_BASEPRI << 16U) | QF_BASEPRI);
-
-    /* set all implemented IRQ priories to QF_BASEPRI... */
-    uint8_t nprio = (8U + ((*SCnSCB_ICTR & 0x7U) << 3U)) * 4U;
-    for (uint8_t n = 0U; n < nprio; ++n) {
-        NVIC_IP[n] = QF_BASEPRI;
+    /* set all 240 possible IRQ priories to QF_BASEPRI... */
+    for (uint_fast8_t n = 0U; n < (240U/sizeof(uint32_t)); ++n) {
+        NVIC_IP[n] = (QF_BASEPRI << 24U) | (QF_BASEPRI << 16U)
+                     | (QF_BASEPRI << 8U) | QF_BASEPRI;
     }
 
 #endif                  /*--------- ARMv7-M or higher */

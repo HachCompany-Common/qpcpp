@@ -35,7 +35,6 @@
 
 extern "C" {
 
-#define SCnSCB_ICTR  ((uint32_t volatile *)0xE000E004U)
 #define SCB_SYSPRI   ((uint32_t volatile *)0xE000ED18U)
 #define NVIC_IP      ((uint32_t volatile *)0xE000E400U)
 #define SCB_CPACR   *((uint32_t volatile *)0xE000ED88U)
@@ -62,29 +61,16 @@ void QV_init(void) {
 
 #if (__ARM_ARCH != 6)   /*--------- if ARMv7-M and higher... */
 
-    /* set exception priorities to QF_BASEPRI...
-    * SCB_SYSPRI[0]: Usage-fault, Bus-fault, Memory-fault
-    */
-    SCB_SYSPRI[0] = (SCB_SYSPRI[0]
-        | (QF_BASEPRI << 16U) | (QF_BASEPRI << 8U) | QF_BASEPRI);
+    /* SCB_SYSPRI[2]:  SysTick */
+    SCB_SYSPRI[2] = (SCB_SYSPRI[2] | (QF_BASEPRI << 24U));
 
-    /* SCB_SYSPRI[1]: SVCall */
-    SCB_SYSPRI[1] = (SCB_SYSPRI[1] | (QF_BASEPRI << 24U));
-
-    /* SCB_SYSPRI[2]:  SysTick, PendSV, Debug */
-    SCB_SYSPRI[2] = (SCB_SYSPRI[2]
-        | (QF_BASEPRI << 24U) | (QF_BASEPRI << 16U) | QF_BASEPRI);
-
-    /* set all implemented IRQ priories to QF_BASEPRI... */
-    uint8_t nprio = (8U + ((*SCnSCB_ICTR & 0x7U) << 3U)) * 4U;
-    for (uint8_t n = 0U; n < nprio; ++n) {
-        NVIC_IP[n] = QF_BASEPRI;
+    /* set all 240 possible IRQ priories to QF_BASEPRI... */
+    for (uint_fast8_t n = 0U; n < (240U/sizeof(uint32_t)); ++n) {
+        NVIC_IP[n] = (QF_BASEPRI << 24U) | (QF_BASEPRI << 16U)
+                     | (QF_BASEPRI << 8U) | QF_BASEPRI;
     }
 
 #endif                  /*--------- ARMv7-M or higher */
-
-    /* SCB_SYSPRI[2]: PendSV set to priority 0xFF (lowest) */
-    SCB_SYSPRI[2] = (SCB_SYSPRI[2] | (0xFFU << 16U));
 
 #if (__ARM_FP != 0)     /*--------- if VFP available... */
     /* make sure that the FPU is enabled by seting CP10 & CP11 Full Access */

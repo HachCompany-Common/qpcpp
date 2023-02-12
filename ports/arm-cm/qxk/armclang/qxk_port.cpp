@@ -47,10 +47,10 @@ void QXK_USE_IRQ_HANDLER(void);
 void NMI_Handler(void);
 #endif
 
-#define SCnSCB_ICTR  ((uint32_t volatile *)0xE000E004U)
 #define SCB_SYSPRI   ((uint32_t volatile *)0xE000ED18U)
 #define NVIC_EN      ((uint32_t volatile *)0xE000E100U)
-#define NVIC_IP      ((uint8_t  volatile *)0xE000E400U)
+#define NVIC_IP      ((uint32_t volatile *)0xE000E400U)
+#define SCB_CPACR   *((uint32_t volatile *)0xE000ED88U)
 #define FPU_FPCCR   *((uint32_t volatile *)0xE000EF34U)
 #define NVIC_PEND    0xE000E200
 #define SCB_ICSR     0xE000ED04
@@ -75,23 +75,13 @@ void QXK_init(void) {
 
 #if (__ARM_ARCH != 6)   /*--------- if ARMv7-M and higher... */
 
-    /* set exception priorities to QF_BASEPRI...
-    * SCB_SYSPRI[0]: Usage-fault, Bus-fault, Memory-fault
-    */
-    SCB_SYSPRI[0] = (SCB_SYSPRI[0]
-        | (QF_BASEPRI << 16U) | (QF_BASEPRI << 8U) | QF_BASEPRI);
+    /* SCB_SYSPRI[2]:  SysTick */
+    SCB_SYSPRI[2] = (SCB_SYSPRI[2] | (QF_BASEPRI << 24U));
 
-    /* SCB_SYSPRI[1]: SVCall */
-    SCB_SYSPRI[1] = (SCB_SYSPRI[1] | (QF_BASEPRI << 24U));
-
-    /* SCB_SYSPRI[2]:  SysTick, PendSV, Debug */
-    SCB_SYSPRI[2] = (SCB_SYSPRI[2]
-        | (QF_BASEPRI << 24U) | (QF_BASEPRI << 16U) | QF_BASEPRI);
-
-    /* set all implemented IRQ priories to QF_BASEPRI... */
-    uint8_t nprio = (8U + ((*SCnSCB_ICTR & 0x7U) << 3U)) * 4U;
-    for (uint8_t n = 0U; n < nprio; ++n) {
-        NVIC_IP[n] = QF_BASEPRI;
+    /* set all 240 possible IRQ priories to QF_BASEPRI... */
+    for (uint_fast8_t n = 0U; n < (240U/sizeof(uint32_t)); ++n) {
+        NVIC_IP[n] = (QF_BASEPRI << 24U) | (QF_BASEPRI << 16U)
+                     | (QF_BASEPRI << 8U) | QF_BASEPRI;
     }
 
 #endif                  /*--------- ARMv7-M or higher */
@@ -108,9 +98,11 @@ void QXK_init(void) {
 #endif                  /*--------- QXK IRQ specified */
 
 #if (__ARM_FP != 0)     /*--------- if VFP available... */
-    /* configure the FPU for QK */
-    FPU_FPCCR |= (1U << 30U)    /* automatic FPU state preservation (ASPEN) */
-                 | (1U << 31U); /* lazy stacking (LSPEN) */
+    /* make sure that the FPU is enabled by seting CP10 & CP11 Full Access */
+    SCB_CPACR = (SCB_CPACR | ((3UL << 20U) | (3UL << 22U)));
+
+    /* FPU automatic state preservation (ASPEN) lazy stacking (LSPEN) */
+    FPU_FPCCR = (FPU_FPCCR | (1U << 30U) | (1U << 31U));
 #endif                  /*--------- VFP available */
 }
 
