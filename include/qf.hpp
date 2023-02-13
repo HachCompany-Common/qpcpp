@@ -951,7 +951,7 @@ namespace QP {
 //! recipient's event queue. The recipient then processes the time event just
 //! like any other event.
 //! <br>
-//! //! Time events, as any other QF events derive from the QP::QEvt base
+//! Time events, as any other QF events derive from the QP::QEvt base
 //! class. Typically, you will use a time event as-is, but you can also
 //! further derive more specialized time events from it by adding some more
 //! data members and/or specialized functions that operate on the specialized

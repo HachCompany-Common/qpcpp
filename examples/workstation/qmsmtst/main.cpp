@@ -1,13 +1,13 @@
 //============================================================================
 // Product: QHsmTst Example
-// Last updated for: @ref qpcpp_7_0_0
-// Last updated on: 2021-12-18
+// Last updated for: @ref qpcpp_7_2_2
+// Last updated on: 2023-02-13
 //
 //                    Q u a n t u m  L e a P s
 //                    ------------------------
 //                    Modern Embedded Software
 //
-// Copyright (C) 2005-2021 Quantum Leaps, LLC. All rights reserved.
+// Copyright (C) 2005 Quantum Leaps, LLC. All rights reserved.
 //
 // This program is open source software: you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as published
@@ -31,11 +31,17 @@
 // <www.state-machine.com/licensing>
 // <info@state-machine.com>
 //============================================================================
-#include "qpcpp.hpp"
+#include "qep_port.hpp"
+#include "qassert.h"        // embedded systems assertions
+#ifdef Q_SPY
+    #include "qs_port.hpp"  // QS software tracing
+#else
+    #include "qs_dummy.hpp" // QS software tracing dummy
+#endif
 #include "qmsmtst.hpp"
 
-#include "safe_std.h"   // portable "safe" <stdio.h>/<string.h> facilities
-#include <stdlib.h>
+#include "safe_std.h" // portable "safe" <stdio.h>/<string.h> facilities
+#include <stdlib.h>   // for exit()
 
 using namespace QP;
 
@@ -48,52 +54,32 @@ static void dispatch(QP::QSignal sig);
 //............................................................................
 int main(int argc, char *argv[ ]) {
 
-    QF::init();
-    QF::onStartup();
-
-    Q_ALLEGE(QS_INIT(argv));
-    QS_OBJ_DICTIONARY(the_sm);
-    QS_SIG_DICTIONARY(A_SIG, nullptr);
-    QS_SIG_DICTIONARY(B_SIG, nullptr);
-    QS_SIG_DICTIONARY(C_SIG, nullptr);
-    QS_SIG_DICTIONARY(D_SIG, nullptr);
-    QS_SIG_DICTIONARY(E_SIG, nullptr);
-    QS_SIG_DICTIONARY(F_SIG, nullptr);
-    QS_SIG_DICTIONARY(G_SIG, nullptr);
-    QS_SIG_DICTIONARY(H_SIG, nullptr);
-    QS_SIG_DICTIONARY(I_SIG, nullptr);
-    QS_GLB_FILTER(QP::QS_ALL_RECORDS);
-    QS_GLB_FILTER(-QP::QS_QF_TICK);
-
     if (argc > 1) { // file name provided?
-        l_outFile = fopen(argv[1], "w");
+        FOPEN_S(l_outFile, argv[1], "w");
     }
 
     if (l_outFile == (FILE *)0) { // interactive version?
         l_outFile = stdout;
 
         PRINTF_S("QMsmTst example, built on %s at %s\n"
-               "QEP: %s.\nPress ESC to quit...\n",
+               "QEP: %s.\nEnter x or X quit...\n",
                __DATE__, __TIME__, QP_VERSION_STR);
 
         the_sm->init(0U); // trigger the initial tran. in the test HSM
 
         for (;;) { // event loop
-            PRINTF_S("\n%c", '>');
-            QS_OUTPUT(); // handle the QS output
-
-            int c;
-            c = (uint8_t)QP::QF::consoleWaitForKey();
-            PRINTF_S("%c: ", (c >= ' ') ? c : 'X');
+            PRINTF_S("\n%s", ">>>");
+            char inp[4];
+            scanf("%1s", inp); // input the event
 
             QP::QEvt e = QEVT_INITIALIZER(0);
-            if ('a' <= c && c <= 'i') { // in range?
-                e.sig = (QP::QSignal)(c - 'a' + A_SIG);
+            if ('a' <= inp[0] && inp[0] <= 'i') { // in range?
+                e.sig = (QP::QSignal)(inp[0] - 'a' + A_SIG);
             }
-            else if ('A' <= c && c <= 'I') { // in range?
-                e.sig = (QP::QSignal)(c - 'A' + A_SIG);
+            else if ('A' <= inp[0] && inp[0] <= 'I') { // in range?
+                e.sig = (QP::QSignal)(inp[0] - 'A' + A_SIG);
             }
-            else if (c == '\33') { // the ESC key?
+            else if ((inp[0] == 'x') || (inp[0] == 'X')) { // x or X?
                 e.sig = TERMINATE_SIG; // terminate the interactive test
             }
             else {
@@ -136,10 +122,13 @@ int main(int argc, char *argv[ ]) {
         fclose(l_outFile);
     }
 
-    QF::onCleanup();
     return 0;
 }
-
+//............................................................................
+extern "C" Q_NORETURN Q_onAssert(char const * const file, int_t const  line) {
+    FPRINTF_S(stderr, "Assertion failed in %s, line %d", file, line);
+    exit(-1);
+}
 //............................................................................
 void BSP_display(char const *msg) {
     FPRINTF_S(l_outFile, "%s",  msg);
@@ -147,14 +136,7 @@ void BSP_display(char const *msg) {
 //............................................................................
 void BSP_terminate(int16_t const result) {
     PRINTF_S("%s", "Bye, Bye!");
-    QF::onCleanup();
     exit(result);
-}
-//............................................................................
-extern "C" Q_NORETURN Q_onAssert(char const * const file, int_t const  line) {
-    FPRINTF_S(stderr, "Assertion failed in %s, line %d", file, line);
-    QF::onCleanup();
-    exit(-1);
 }
 //............................................................................
 static void dispatch(QP::QSignal sig) {
@@ -162,39 +144,5 @@ static void dispatch(QP::QSignal sig) {
     FPRINTF_S(l_outFile, "\n%c:", 'A' + sig - A_SIG);
     QP::QEvt e = QEVT_INITIALIZER(sig);
     the_sm->dispatch(&e, 0U); // dispatch the event
-    QS_OUTPUT(); // handle the QS output
 }
-
-namespace QP {
-
-//----------------------------------------------------------------------------
-void QF::onStartup(void) {
-    QF::consoleSetup();
-}
-//............................................................................
-void QF::onCleanup(void) {
-    QF::consoleCleanup();
-}
-//............................................................................
-void QF::onClockTick(void) {
-}
-
-//----------------------------------------------------------------------------
-#ifdef Q_SPY
-
-//! callback function to execute user commands (dummy definition)
-void QS::onCommand(uint8_t cmdId,
-     uint32_t param1, uint32_t param2, uint32_t param3)
-{
-    /* unused parameters */
-    (void)cmdId;
-    (void)param1;
-    (void)param2;
-    (void)param3;
-}
-
-#endif // Q_SPY
-//----------------------------------------------------------------------------
-
-} // namespace QP
 
