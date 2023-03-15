@@ -9530,7 +9530,7 @@ QS::endRec_();
 QF_INT_ENABLE();
 #endif
 
-onStartup(); // startup callback
+onStartup(); // application-specific startup callback
 
 QF_INT_DISABLE();
 
@@ -9865,7 +9865,7 @@ QS::endRec_();
 QF_INT_ENABLE();
 #endif
 
-onStartup(); // startup callback
+onStartup(); // application-specific startup callback
 
 QF_INT_DISABLE();
 
@@ -9875,8 +9875,6 @@ QK_attr_.lockCeil = 0U; // unlock the QK scheduler
 if (QK_sched_() != 0U) {
     QK_activate_();
 }
-
-onStartup(); // application-specific startup callback
 
 #ifdef QK_START
 QK_START(); // port-specific startup of the QK kernel
@@ -11867,7 +11865,7 @@ QS::endRec_();
 QF_INT_ENABLE();
 #endif
 
-onStartup(); // startup callback
+onStartup(); // application-specific startup callback
 
 QF_INT_DISABLE();
 

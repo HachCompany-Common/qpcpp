@@ -190,7 +190,7 @@ int_t run() {
     QF_INT_ENABLE();
     #endif
 
-    onStartup(); // startup callback
+    onStartup(); // application-specific startup callback
 
     QF_INT_DISABLE();
 
@@ -200,8 +200,6 @@ int_t run() {
     if (QK_sched_() != 0U) {
         QK_activate_();
     }
-
-    onStartup(); // application-specific startup callback
 
     #ifdef QK_START
     QK_START(); // port-specific startup of the QK kernel

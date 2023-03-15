@@ -196,7 +196,7 @@ int_t run() {
     QF_INT_ENABLE();
     #endif
 
-    onStartup(); // startup callback
+    onStartup(); // application-specific startup callback
 
     QF_INT_DISABLE();
 
