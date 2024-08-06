@@ -128,7 +128,7 @@ void QActive::start(QPrioSpec const prioSpec,
     // create an embOS task for the AO
     OS_CreateTaskEx(&m_thread,
 #if (OS_TRACKNAME != 0)
-                    m_thread.Name, // the configured task name
+                    m_thread.sName, // the configured task name
 #elif
                     "AO",          // a generic AO task name
 #endif
@@ -144,8 +144,8 @@ void QActive::setAttr(std::uint32_t attr1, void const *attr2) {
     switch (attr1) {
         case TASK_NAME_ATTR:
 #if (OS_TRACKNAME != 0)
-            Q_ASSERT_ID(300, m_thread.Name == nullptr);
-            m_thread.Name = static_cast<char const *>(attr2);
+            Q_ASSERT_ID(300, m_thread.sName == nullptr);
+            m_thread.sName = static_cast<char const *>(attr2);
 #endif
             break;
         case TASK_USES_FPU:
