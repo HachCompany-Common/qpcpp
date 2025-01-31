@@ -1,6 +1,5 @@
 //============================================================================
 // QP/C++ Real-Time Embedded Framework (RTEF)
-// Version 8.0.2
 //
 // Copyright (C) 2005 Quantum Leaps, LLC. All rights reserved.
 //
@@ -180,7 +179,7 @@ constexpr enum_t  Q_USER_SIG {4};
 
 //============================================================================
 class QAsm {
-protected:
+public:
     QAsmAttr m_state;
     QAsmAttr m_temp;
 
@@ -242,8 +241,8 @@ public:
     virtual void dispatch(
         QEvt const * const e,
         std::uint_fast8_t const qsId) = 0;
-    virtual bool isIn(QStateHandler const state) noexcept {
-        static_cast<void>(state);
+    virtual bool isIn(QStateHandler const stateHndl) noexcept {
+        Q_UNUSED_PAR(stateHndl);
         return false;
     }
     QStateHandler state() const noexcept {
@@ -342,8 +341,8 @@ public:
     void dispatch(
         QEvt const * const e,
         std::uint_fast8_t const qsId) override;
-    bool isIn(QStateHandler const state) noexcept override;
-    QStateHandler childState(QStateHandler const parent) noexcept;
+    bool isIn(QStateHandler const stateHndl) noexcept override;
+    QStateHandler childState(QStateHandler const parentHndl) noexcept;
 
 #ifdef Q_SPY
     QStateHandler getStateHandler() noexcept override {
@@ -387,8 +386,9 @@ public:
         return m_state.obj->stateHandler;
     }
 #endif // def Q_SPY
-    bool isIn(QStateHandler const state) noexcept override;
-    QMState const * childStateObj(QMState const * const parent) const noexcept;
+    bool isIn(QStateHandler const stateHndl) noexcept override;
+    QMState const * childStateObj(QMState const * const parentHndl)
+        const noexcept;
 
 private:
     QState execTatbl_(
@@ -565,24 +565,12 @@ private:
 }; // class QSubscrList
 
 //============================================================================
-class QPtrDis {
-private:
-    std::uintptr_t m_ptr_dis;
-
-    // friends...
-    friend class QTimeEvt;
-    friend class QXThread;
-
-public:
-    QPtrDis(void const * const ptr = nullptr) noexcept;
-}; // class QPtrDis
-
 class QEQueue; // forward declaration
 
 
 //============================================================================
 class QActive : public QP::QAsm {
-protected:
+private:
     std::uint8_t m_prio;
     std::uint8_t m_pthre;
 
@@ -640,11 +628,11 @@ public:
     {
         reinterpret_cast<QHsm *>(this)->QHsm::dispatch(e, qsId);
     }
-    bool isIn(QStateHandler const state) noexcept override {
-        return reinterpret_cast<QHsm *>(this)->QHsm::isIn(state);
+    bool isIn(QStateHandler const stateHndl) noexcept override {
+        return reinterpret_cast<QHsm *>(this)->QHsm::isIn(stateHndl);
     }
-    QStateHandler childState(QStateHandler const parent) noexcept {
-        return reinterpret_cast<QHsm *>(this)->QHsm::childState(parent);
+    QStateHandler childState(QStateHandler const parentHandler) noexcept {
+        return reinterpret_cast<QHsm *>(this)->QHsm::childState(parentHandler);
     }
     void setAttr(
         std::uint32_t attr1,
@@ -755,7 +743,7 @@ private:
 //============================================================================
 class QMActive : public QP::QActive {
 protected:
-    QMActive(QStateHandler const initial) noexcept;
+    explicit QMActive(QStateHandler const initial) noexcept;
 
 public:
     void init(
@@ -773,8 +761,8 @@ public:
     {
         reinterpret_cast<QMsm *>(this)->QMsm::dispatch(e, qsId);
     }
-    bool isIn(QStateHandler const state) noexcept override {
-        return reinterpret_cast<QMsm *>(this)->QMsm::isIn(state);
+    bool isIn(QStateHandler const stateHndl) noexcept override {
+        return reinterpret_cast<QMsm *>(this)->QMsm::isIn(stateHndl);
     }
 
 #ifdef Q_SPY
