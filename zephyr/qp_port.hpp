@@ -1,5 +1,5 @@
 //============================================================================
-// QP/C++ Real-Time Embedded Framework (RTEF)
+// QP/C++ Real-Time Event Framework (RTEF)
 //
 // Copyright (C) 2005 Quantum Leaps, LLC. All rights reserved.
 //
@@ -24,6 +24,7 @@
 //
 // Quantum Leaps contact information:
 // <www.state-machine.com/licensing>
+// <info@state-machine.com>
 //============================================================================
 #ifndef QP_PORT_HPP_
 #define QP_PORT_HPP_
