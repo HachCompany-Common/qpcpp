@@ -1,4 +1,4 @@
-d5884d73b587481051fb3fa46a14e0a09bf23d8e *include/qequeue.hpp
+65c63eaf0a448035f849cde7854b9487acdf276c *include/qequeue.hpp
 e7aa6100e77fada351e3ae3779b2b13c7db2f2db *include/qk.hpp
 d299b9482e86b87001cee203c1f0c21293980699 *include/qmpool.hpp
 915a917bfe8719dca0c286850f0e3e6c974d8450 *include/qp.hpp
@@ -26,7 +26,7 @@ e4e0cb4615150c8490fe7e828b3acc454e62f31c *src/qf/qf_qeq.cpp
 71b607d20050f4a9eecd681fea1091b5a3faf510 *src/qf/qf_qmact.cpp
 0c2d370641212429107b8e990f36df3517f4c5c5 *src/qf/qf_time.cpp
 7cdab433e81612862fd27f0cf792d38e1197d064 *src/qk/CMakeLists.txt
-5dd2e3cf4cd4d0b4f2a6e4eabdb057c1827f08bf *src/qk/qk.cpp
+820c7bf5e7dcb7a8bc507a3b49d0dedc0dbd6973 *src/qk/qk.cpp
 eb28260d471fc752ca54b2c1e2d763f28432c2c1 *src/qs/CMakeLists.txt
 2045bcc13617672b68c48f3f28b9d1bcc534d186 *src/qs/qs.cpp
 9595c7e63c5932098c4143e7f0da54fb218aed0f *src/qs/qs_64bit.cpp
@@ -35,8 +35,8 @@ ddd3aefa058bd44b9aad4ab7e1a1c14dcb4ed42b *src/qs/qs_rx.cpp
 c97bda54ac3be8da467c70440f983fa934eaa864 *src/qs/qstamp.cpp
 856ca5eb3861223e9823b6fd85bd850375f246a4 *src/qs/qutest.cpp
 b6d93a16f5b176d3da4888a7efb265730337f46d *src/qv/CMakeLists.txt
-629b451584e0f03ca4b44c69f49b29f26d482488 *src/qv/qv.cpp
-22da1222f6ee6dafd8f4d4c53f3811eb3fd8d318 *src/qxk/qxk.cpp
+edb452645120cdfbfc53f9c7e7508993aaea09ba *src/qv/qv.cpp
+7b82c9fcbca0aa8cee4e088ea9f695d1fa91f5e3 *src/qxk/qxk.cpp
 056603979c540580770fbf698304867e04d7120b *src/qxk/qxk_mutex.cpp
 d28890fd040fc4aa38d9c9f5e80ac710855730b2 *src/qxk/qxk_sema.cpp
 c77878cef97e1b57c6e6937e3e70740754e1104d *src/qxk/qxk_xthr.cpp
